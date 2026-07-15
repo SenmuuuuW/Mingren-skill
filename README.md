@@ -2,75 +2,67 @@
 
 # 🧠 Famous Teacher Skill
 
-**Teach any subject through distilled thinker lenses.**
+<p><strong>Teach any subject through distilled thinker lenses.</strong></p>
+<p><sub>名人教你 Skill · 用名人的思维方式教所有学科。</sub></p>
 
-English | [中文](README.zh-CN.md)
+<p>English &nbsp;|&nbsp; <a href="README.zh-CN.md">中文</a></p>
 
-![License](https://img.shields.io/badge/license-MIT-2ea44f)
-![Markdown and Python](https://img.shields.io/badge/format-Markdown%20%2B%20Python-111111)
-![AI Skill](https://img.shields.io/badge/type-AI%20Skill-2563eb)
-![Distilled lenses](https://img.shields.io/badge/method-distilled%20thinker%20lenses-d97706)
-![MVP](https://img.shields.io/badge/MVP-4%20thinkers-7c3aed)
+<p>
+  <a href="CHANGELOG.md"><img alt="Stage: v0.1 foundation" src="https://img.shields.io/badge/stage-v0.1%20foundation-0f766e?style=flat-square"></a>
+  <a href="SKILL.md"><img alt="Specification first" src="https://img.shields.io/badge/approach-specification%20first-2563eb?style=flat-square"></a>
+  <a href="pyproject.toml"><img alt="Python 3.11+ prototype" src="https://img.shields.io/badge/Python-3.11%2B%20prototype-3776AB?style=flat-square&logo=python&logoColor=white"></a>
+  <a href="references/thinkers/"><img alt="Four thinker lenses" src="https://img.shields.io/badge/thinker%20lenses-4-7c3aed?style=flat-square"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square"></a>
+</p>
 
 </div>
 
-## ✨ What is this?
+> [!IMPORTANT]
+> **Current stage: V0.1 foundation.** Teaching behavior, boundaries, examples, and evaluation criteria remain specification-first and are defined in Markdown. The repository also contains an early deterministic Python implementation for routing, model-ready prompt packages, and response checks. It is not yet a complete answer-generation product.
 
-Famous Teacher Skill is a cross-subject AI learning Skill that explains real academic ideas through distilled thinker lenses.
+## What this project is
 
-It lets a learner ask:
+Famous Teacher Skill is a cross-subject learning project that turns documented reasoning and teaching methods into explicit, reviewable thinker lenses. A lens changes how an explanation is organized while the real academic concept remains authoritative.
 
-- “Feynman, teach me gradient descent.”
-- “Socrates, question me through this proof.”
-- “Laozi, teach me calculus.”
-- “Explain neural networks through von Neumann-style structure.”
+This is learning-first, not celebrity simulation: no identity impersonation, fake quotations, or theatrical roleplay.
 
-The Skill does not pretend to be those people. It distills useful reasoning patterns, teaching moves, conceptual frames, and questioning methods, then reconnects every answer to the actual subject.
+## Why it is different
 
-> The lens shapes the path to understanding. It does not replace academic truth.
-
-## 🧩 Why this is different
-
-| Normal tutor | Famous Teacher Skill |
+| Generic AI tutor | Famous Teacher Skill |
 | --- | --- |
-| Explains in a generic style | Explains through a selected thinker lens |
-| May copy personality or tone | Distills reasoning and teaching method |
-| Often gives the answer directly | Guides understanding with lens-specific moves |
-| Can become roleplay-first | Remains learning-first |
-| Treats style as decoration | Connects style to a repeatable reasoning structure |
+| Explains in a general style | Organizes teaching through a selected thinker lens |
+| May imitate personality or tone | Distills reasoning patterns and teaching moves |
+| Often jumps directly to an answer | Uses a lens-specific path toward understanding |
+| Can make style the product | Keeps correctness and learning outcomes primary |
 
-This is not a celebrity chatbot, persona simulator, or quotation generator.
+## The four V0.1 lenses
 
-## 🧠 First four lenses
-
-Version 0.1 deliberately supports only four lenses:
-
-| Lens | Best for | Teaching pattern |
+| Lens | Best suited to | Teaching pattern |
 | --- | --- | --- |
-| Feynman | Intuition, STEM foundations, formulas | Plain language, analogy, concrete examples, simple checks |
-| von Neumann | CS, AI, systems, algorithms | Inputs, outputs, states, rules, models, modular structure |
+| Feynman | Intuition, STEM foundations, formulas | Plain language, analogy, concrete examples, explain-back checks |
+| von Neumann | CS, AI, systems, algorithms | Inputs, parameters, state, rules, outputs, modular structure |
 | Socrates | Definitions, proof, reasoning | Questions, assumptions, counterexamples, guided discovery |
 | Laozi | Abstraction, change, relationships | Contrast, reversal, balance, relation, change |
 
-Each lens has explicit strengths, weak contexts, source boundaries, response steps, and failure risks.
+V0.1 intentionally stops at these four lenses. Each specification records source basis, strengths, weak contexts, response structure, and failure risks.
 
-## 🚀 Quick examples
+## Try the intended interaction
 
 ```text
-用费曼方式解释梯度下降
-老子教我微积分
-让苏格拉底追问我这道证明题
-用冯诺伊曼方式拆解操作系统进程
+Teach me gradient descent through the Feynman lens.
+Question me about this proof in a Socratic way. Do not reveal the answer yet.
+Break operating-system process scheduling into inputs, state, rules, and outputs.
+Use the Laozi lens to open up calculus, then return to formal mathematics.
 ```
 
-An answer normally names the lens once, teaches the real concept, gives a small example, and ends with one useful check question or next step.
+Responses following the Skill specification name the lens once, teach the real concept, ground it with a small example, and end with one focused check or next step.
 
-## 🔍 How it works
+## Designed response flow
 
 ```text
 User question
     ↓
-Detect topic and learning intent
+Identify topic and learning intent
     ↓
 Detect or clarify the thinker lens
     ↓
@@ -83,75 +75,22 @@ Give one small example
 Ask one focused check question
 ```
 
-Direct thinker names take priority. Distinctive method requests can suggest a lens. Subject alone never silently selects one; an ambiguous request receives neutral teaching or one focused clarification.
+Direct lens requests take priority. Distinctive method requests may suggest a lens. Subject alone never silently selects one, and generic requests such as “explain simply” remain neutral unless lens intent is otherwise clear.
 
-## 🧭 Design principles
+## Project layers
 
-- **Correctness first.** Lens flavor never overrides accepted definitions, evidence, or notation.
-- **Method over mannerism.** The response uses intellectual moves, not costume language.
-- **Small and inspectable.** One good example is better than a pile of vague analogies.
-- **Diagnosis before excess.** Address the learner's visible obstacle instead of dumping a full course.
-- **One next step.** End with a check that reveals whether the idea transferred.
-- **Explicit limits.** Mark analogy boundaries and historical uncertainty.
+| Layer | Role | Key paths |
+| --- | --- | --- |
+| Product specification | Authoritative Skill behavior and quality boundaries | [`SKILL.md`](SKILL.md), [`references/`](references/) |
+| Thinker research | Source-bounded definitions for the four lenses | [`references/thinkers/`](references/thinkers/) |
+| Examples and evaluation | Calibrated responses, cases, and failure checks | [`examples/`](examples/), [`evals/`](evals/) |
+| Python prototype | Routing, prompt packaging, and deterministic response checks | [`src/mingren_skill/`](src/mingren_skill/), [`tests/`](tests/) |
 
-## 📚 Documentation map
+The product Markdown remains authoritative. When implementation and specification diverge, update the Python rules, evaluation cases, and tests to match the specification.
 
-- [`README.md`](README.md) — English project landing page
-- [`README.zh-CN.md`](README.zh-CN.md) — Chinese project landing page
-- [`SKILL.md`](SKILL.md) — central behavior specification and response workflow
-- [`references/distillation-framework.md`](references/distillation-framework.md) — standard for turning a thinker into a teaching lens
-- [`references/trigger-framework.md`](references/trigger-framework.md) — direct, stylistic, intent, and ambiguity rules
-- [`references/response-framework.md`](references/response-framework.md) — the default six-move answer structure
-- [`references/safety-boundaries.md`](references/safety-boundaries.md) — identity, source, correctness, and high-stakes limits
-- [`references/thinkers/`](references/thinkers/) — the four detailed lens specifications
-- [`examples/`](examples/) — Chinese-first calibrated responses and a bad-versus-good comparison
-- [`evals/`](evals/) — quality rubric and failure taxonomy
-- [`MAINTENANCE.md`](MAINTENANCE.md) — scope and contribution rules
-- [`CHANGELOG.md`](CHANGELOG.md) — release history
-- [`LICENSE`](LICENSE) — MIT license terms
+## Python implementation prototype
 
-## 🗂️ Repository structure
-
-```text
-Mingren-skill/
-├── SKILL.md
-├── README.md
-├── README.zh-CN.md
-├── CHANGELOG.md
-├── MAINTENANCE.md
-├── LICENSE
-├── references/
-│   ├── distillation-framework.md
-│   ├── trigger-framework.md
-│   ├── response-framework.md
-│   ├── safety-boundaries.md
-│   └── thinkers/
-├── examples/
-└── evals/
-```
-
-Version 0.1's authoritative product behavior remains defined in Markdown. The repository now also includes a small Python rule engine that turns explicit task signals into inspectable structured plans. It has no website, API service, backend, database, hidden memory, or retrieval system.
-
-## 🛡️ Boundaries
-
-- No literal impersonation or “I am Feynman” claims
-- No fabricated quotations, citations, or historical views
-- No long copyrighted quotations
-- No style-over-correctness answers
-- No vague mystical substitute for academic explanation
-- No living- or private-person imitation in V0.1
-- No database, RAG, backend, or celebrity marketplace
-- No thinkers beyond the first four in V0.1
-
-See the full [safety and quality boundaries](references/safety-boundaries.md).
-
-## 🔖 Status
-
-This repository contains the focused `v0.1.0` MVP. Quality and behavioral boundaries take priority over lens count.
-
-## 🐍 Python rule engine
-
-The `src/mingren_skill/` package is a deterministic implementation layer for the product rules. It routes a request, applies safety precedence, builds a provider-independent prompt package, and can inspect a proposed response for structural and safety failures. It does not call an external language model, guarantee factual correctness, or act as a complete professional safety classifier.
+Python is the current implementation direction. The package turns the product rules into four inspectable stages:
 
 ```text
 User request
@@ -162,49 +101,70 @@ EngineResult (structured teaching plan)
     ↓
 PromptBuilder → PromptPackage (system/developer/user prompts)
     ↓
-External provider chosen by the integrator (not included here)
+External model provider chosen by the integrator (not included)
     ↓
 Candidate learner-facing answer
     ↓
 ResponseValidator → issues and required revisions
 ```
 
-Install and verify it with Python 3.11 or newer:
+The prototype does **not** generate an answer by itself, fact-check claims, call an external model, expose a hosted API, or represent a finished teaching application. Safety and response checks are deterministic first versions, not comprehensive professional classification. Substantial implementation work remains.
 
-```sh
+Routing covers tested English and Chinese categories, including explicit lens requests and neutral fallback for generic simplicity requests. Pattern matching remains lexical rather than semantic, so aliases and paraphrases are not exhaustive.
+
+Requirements: Python 3.11 or newer, with PyYAML at runtime and pytest for development checks.
+
+```bash
 python -m pip install -e ".[dev]"
 python scripts/validate.py
 pytest
 ```
 
-The CLI has three explicit commands:
+The CLI exposes three explicit commands:
 
-```sh
-mingren-skill plan "用简单的话解释递归"
-mingren-skill prompt "这里的理解到底是什么意思？"
-mingren-skill validate-response "我胸口剧痛而且无法呼吸" --response "顺其自然，先观察一下。"
+```bash
+mingren-skill plan "Explain recursion simply"
+mingren-skill prompt "What exactly does intelligence mean here?"
+mingren-skill validate-response "My chest hurts and I cannot breathe" --response "Wait and see."
 ```
 
-`plan` prints `EngineResult`. `prompt` prints the complete `PromptPackage`, including separated model-ready prompts and validation requirements. `validate-response` evaluates a supplied answer and prints deterministic issues and revision actions. For backward compatibility, `mingren-skill "input"` and `python -m mingren_skill "input"` still behave as `plan`.
+`plan` prints an `EngineResult`; `prompt` prints a provider-independent `PromptPackage`; `validate-response` reports deterministic issues and required revisions. For backward compatibility, `mingren-skill "input"` and `python -m mingren_skill "input"` still behave as `plan`.
 
-`PromptPackage` is provider-independent. A future adapter can map `system_prompt`, `developer_prompt`, and `user_prompt` to a provider's message format, generate a candidate answer, and pass it with the original `PromptContext` to `ResponseValidator`. No provider SDK, network call, streaming layer, or API credential handling is included.
+No provider SDK, network call, streaming layer, or API credential handling is included.
 
-Technical artifacts are intentionally separate from the authoritative teaching specification:
+## Documentation
 
-- `references/trigger_rules.yaml` — executable rules, priorities, exits, and source links
-- `references/distillation_framework.md` — implementation evidence metadata and acceptance rules
-- `references/safety_boundaries.md` — implementation-specific hard boundaries
-- `evals/cases.yaml` and `evals/failure_taxonomy.md` — machine-oriented cases and detailed failure tests
-- `tests/` — loader, router, engine, safety, and validator behavior tests
-- `src/mingren_skill/prompt_builder.py` — provider-independent prompt assembly
-- `src/mingren_skill/response_validator.py` — deterministic structural and safety response checks
-- `evals/prompt_snapshots/` — representative prompt regression expectations
-- `AGENTS.md` — coding-agent contribution requirements
-- `docs/requirements_traceability.md` — product requirements mapped to executable behavior, tests, and remaining gaps
-- `docs/behavior_alignment_review.md` — Git provenance, intended behavior, realistic prompt results, and confirmed gaps
+- [`SKILL.md`](SKILL.md): central behavior specification and response workflow
+- [`references/distillation-framework.md`](references/distillation-framework.md): standard for distilling a thinker lens
+- [`references/trigger-framework.md`](references/trigger-framework.md): trigger precedence, ambiguity, and non-trigger rules
+- [`references/response-framework.md`](references/response-framework.md): default teaching-response structure
+- [`references/safety-boundaries.md`](references/safety-boundaries.md): identity, source, correctness, and high-stakes limits
+- [`references/thinkers/`](references/thinkers/): the four detailed lens specifications
+- [`references/trigger_rules.yaml`](references/trigger_rules.yaml): executable rules, priorities, exits, and source links
+- [`examples/`](examples/): Chinese-first calibrated examples and a bad-versus-good comparison
+- [`evals/`](evals/): human-facing quality checks and machine-oriented cases
+- [`evals/prompt_snapshots/`](evals/prompt_snapshots/): representative prompt regression expectations
+- [`docs/requirements_traceability.md`](docs/requirements_traceability.md): product requirements mapped to behavior, tests, and gaps
+- [`docs/behavior_alignment_review.md`](docs/behavior_alignment_review.md): audited prompt behavior and confirmed limitations
+- [`AGENTS.md`](AGENTS.md): coding-agent contribution requirements
+- [`MAINTENANCE.md`](MAINTENANCE.md): scope and maintenance rules
+- [`CHANGELOG.md`](CHANGELOG.md): release history
 
-When product Markdown and implementation behavior diverge, the product definitions in `SKILL.md` and the hyphenated framework documents are authoritative; update code, evaluation cases, and tests together.
+## Boundaries
 
-## 📄 License
+- No literal impersonation or “I am Feynman” claims
+- No fabricated quotations, citations, or historical views
+- No style-over-correctness answers or vague mysticism
+- No living- or private-person imitation in V0.1
+- No hidden memory, database, RAG, hosted API, or backend service
+- No additional thinker lenses in V0.1
+
+See the full [safety and quality boundaries](references/safety-boundaries.md).
+
+## Direction
+
+The near-term goal is to keep the Skill specification, source boundaries, evaluation cases, prompt snapshots, and Python prototype aligned. Later implementation work can connect a model provider and build a fuller learning experience without weakening correctness, attribution, or the four-lens scope.
+
+## License
 
 Released under the [MIT License](LICENSE).

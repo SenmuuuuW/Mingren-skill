@@ -12,6 +12,7 @@
 - Added `plan`, `prompt`, and `validate-response` CLI commands while preserving legacy input-as-plan behavior.
 - Added seven prompt regression snapshots and behavioral coverage for injection containment, language, safety, questioning, impersonation, and prompt leakage.
 - Updated bilingual architecture and provider-integration documentation without adding a provider API.
+- Polished the bilingual landing pages and clarified the specification-first V0.1 and Python-prototype boundary.
 
 ## v0.1.0 - Initial MVP
 
