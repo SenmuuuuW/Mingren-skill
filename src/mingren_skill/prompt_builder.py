@@ -1,4 +1,4 @@
-"""Provider-independent construction of model-ready teaching prompts."""
+"""Construct offline teaching-prompt previews for maintainers."""
 
 from __future__ import annotations
 

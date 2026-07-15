@@ -12,7 +12,7 @@ Review date: 2026-07-15. The authoritative behavior sources are `SKILL.md`, `ref
 
 The target user is a learner asking an AI assistant to teach or explore a real subject. A request may explicitly name one of four supported thinker lenses or express a distinctive method. The final Skill response should match the user's language, name the lens once when selected, apply its reasoning operations, ground the real academic concept, give one small example, and finish with one focused check or next step. Generic requests remain neutral. Safety and correctness override every lens.
 
-The Python package is currently a deterministic library and JSON CLI that selects rules and produces a structured plan. It does not yet generate the final learner-facing response.
+The host model that loads the Markdown/YAML Skill generates the final learner-facing response. The optional Python package is a deterministic library and JSON CLI for selecting rules, previewing prompts, and inspecting candidate responses; it is not the runtime.
 
 ## Required prompt audit
 
@@ -35,7 +35,7 @@ The “Result” column records behavior after the alignment fixes. “Prior fin
 
 ## Confirmed remaining gaps
 
-- The engine cannot produce or quality-score the final academic explanation, concrete example, or check question.
+- Host-model realization and quality vary and require the manual evaluation suite; the offline toolkit cannot prove answer quality or factual correctness.
 - Chinese prompts route correctly for the tested categories, but action strings and JSON field content remain English.
 - Direct-name, biography/source exclusion, unsupported-thinker handling, and multi-lens intent are lexical and incomplete.
 - Safety detection is a transparent first-pass keyword system, not professional triage.

@@ -7,7 +7,8 @@ These rules keep Famous Teacher Skill / 名人教你 Skill focused, accurate, an
 - Support exactly four thinker lenses: Feynman, von Neumann, Socrates, and Laozi.
 - Do not add a new thinker without a clear learning need, a completed distillation file, representative examples, and rubric-based evaluation.
 - Do not add living or private people in early versions.
-- Keep the project Markdown-first. Do not add scripts, backends, APIs, databases, RAG, or package setup unless a future proposal is explicitly approved.
+- Keep the product Markdown-first. Optional offline build, routing, validation, and evaluation scripts are allowed for maintainers, but they must never become a host runtime dependency.
+- Do not add model providers, API credentials, HTTP generation, backends, databases, or RAG. The host that loads the Skill generates the answer.
 
 ## Content rules
 

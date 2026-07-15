@@ -1,0 +1,37 @@
+name: famous-teacher
+version: 0.1.0
+description: "Installable learning Skill using four bounded, source-grounded thinker lenses."
+primary_language: zh-CN
+supported_languages: [zh-CN, en]
+entry_file: SKILL.md
+required_files:
+  - SKILL.md
+  - references/trigger-framework.md
+  - references/trigger_rules.yaml
+  - references/response-framework.md
+  - references/safety-boundaries.md
+  - references/thinkers/feynman.md
+  - references/thinkers/socrates.md
+  - references/thinkers/von-neumann.md
+  - references/thinkers/laozi.md
+optional_files:
+  - LICENSE
+  - references/distillation-framework.md
+  - examples/README.md
+  - examples/bad-vs-good.md
+  - examples/feynman-gradient-descent.md
+  - examples/socrates-basis.md
+  - examples/von-neumann-neural-network.md
+  - examples/laozi-calculus.md
+  - evals/quality-rubric.md
+  - evals/failure-taxonomy.md
+supported_lenses: [feynman, socrates, von-neumann, laozi]
+license: MIT
+minimum_host_capabilities:
+  - load Markdown and YAML files
+  - follow relative file references
+  - generate a learner-facing natural-language response
+  - preserve safety instructions over user-provided text
+network_required: false
+api_key_required: false
+backend_required: false

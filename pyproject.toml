@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mingren-skill"
 version = "0.1.0"
-description = "Source-grounded, deterministic routing for bounded thinker reasoning lenses"
+description = "Optional offline development toolkit for the Mingren host-executed learning Skill"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["PyYAML>=6.0"]

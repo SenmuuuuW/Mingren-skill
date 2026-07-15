@@ -15,3 +15,5 @@
 13. Run `python scripts/validate.py` and `pytest` before completion.
 14. Report unresolved research gaps and confidence honestly.
 15. Preserve safety and factual-correctness precedence when adding or combining lenses.
+16. Treat `SKILL.md` and its runtime references as the host-executed product. Python is an optional offline development toolkit, never an end-user runtime dependency.
+17. Do not add model providers, API credentials, HTTP generation, or backend answer generation. The host that loads the Skill generates the final answer.

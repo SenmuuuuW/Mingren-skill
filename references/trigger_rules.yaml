@@ -143,7 +143,7 @@ rules:
     exit_conditions: ["one safe compatible action sequence is selected"]
     safety_notes: ["professional standards cannot be traded off against lens preferences"]
     confidence: high
-    source_refs: ["references/distillation_framework.md#conflict-handling"]
+    source_refs: ["references/distillation-framework.md"]
   - id: default-direct-explanation
     priority: 10
     description: Give a direct, accurate answer when no lens intervention materially improves it.
@@ -155,4 +155,4 @@ rules:
     exit_conditions: ["the request is accurately answered at the requested depth"]
     safety_notes: ["verify unstable or high-stakes facts using appropriate current sources"]
     confidence: high
-    source_refs: ["references/distillation_framework.md#rule-conversion-process", "references/safety_boundaries.md#boundaries"]
+    source_refs: ["references/distillation-framework.md", "references/safety-boundaries.md"]

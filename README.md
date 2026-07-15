@@ -18,9 +18,11 @@
 </div>
 
 > [!IMPORTANT]
-> **Current stage: V0.1 foundation.** Teaching behavior, boundaries, examples, and evaluation criteria remain specification-first and are defined in Markdown. The repository also contains an early deterministic Python implementation for routing, model-ready prompt packages, and response checks. It is not yet a complete answer-generation product.
+> **Current stage: V0.1 foundation.** Mingren is an installable, host-executed learning Skill. Teaching behavior, boundaries, examples, and evaluation criteria are specification-first and defined in Markdown/YAML. The repository also contains optional offline Python tools for routing, prompt previews, and response checks.
 
 ## What this project is
+
+Mingren Skill (Famous Teacher Skill) is an installable, cross-subject learning Skill. It applies four bounded thinker lenses to help a capable host explain real academic ideas. The host model that loads the Skill generates the answer; Mingren makes no external model API call. No API key, backend, network access, Python installation, or command-line execution is required for ordinary use. The included Python tools are optional offline aids for maintainers.
 
 Famous Teacher Skill is a cross-subject learning project that turns documented reasoning and teaching methods into explicit, reviewable thinker lenses. A lens changes how an explanation is organized while the real academic concept remains authoritative.
 
@@ -84,13 +86,33 @@ Direct lens requests take priority. Distinctive method requests may suggest a le
 | Product specification | Authoritative Skill behavior and quality boundaries | [`SKILL.md`](SKILL.md), [`references/`](references/) |
 | Thinker research | Source-bounded definitions for the four lenses | [`references/thinkers/`](references/thinkers/) |
 | Examples and evaluation | Calibrated responses, cases, and failure checks | [`examples/`](examples/), [`evals/`](evals/) |
-| Python prototype | Routing, prompt packaging, and deterministic response checks | [`src/mingren_skill/`](src/mingren_skill/), [`tests/`](tests/) |
+| Optional development toolkit | Routing, offline prompt previews, deterministic checks, and bundle validation | [`src/mingren_skill/`](src/mingren_skill/), [`scripts/`](scripts/), [`tests/`](tests/) |
 
 The product Markdown remains authoritative. When implementation and specification diverge, update the Python rules, evaluation cases, and tests to match the specification.
 
-## Python implementation prototype
+## 📦 Install and use
 
-Python is the current implementation direction. The package turns the product rules into four inspectable stages:
+Build the portable runtime bundle with:
+
+```sh
+python scripts/build_skill_bundle.py
+```
+
+This creates `dist/skill/` and deterministic `dist/mingren-skill.zip`. In a Skill-capable host, provide that bundle through the host's supported file or Skill interface and use `SKILL.md` as the entry instruction. See [installation concepts](docs/installation.md) and the [runtime contract](docs/runtime_contract.md). No API key or backend is needed.
+
+Example prompts:
+
+```text
+Explain recursion simply.
+Use Socratic questions to clarify what “understanding” means here.
+把一个复杂的软件系统拆成模块。
+```
+
+The runtime bundle contains the entry Skill, manifest, trigger, response and safety rules, four thinker specifications, selected examples, quality guidance, and checksums. Unsupported thinker requests are handled neutrally or with a supported-lens clarification; they do not create new lenses.
+
+## 🐍 Optional development toolkit
+
+The `src/mingren_skill/` package is an optional reference implementation: a deterministic router, offline prompt preview, response validator, evaluation helper, and development CLI. A host normally reads the Skill instructions directly and does not need a `PromptPackage` handoff. The toolkit does not generate learner-facing answers, call a model, guarantee factual correctness, or replace professional safety judgment.
 
 ```text
 User request
@@ -99,16 +121,10 @@ Language detection + rule routing + safety evaluation
     ↓
 EngineResult (structured teaching plan)
     ↓
-PromptBuilder → PromptPackage (system/developer/user prompts)
-    ↓
-External model provider chosen by the integrator (not included)
-    ↓
-Candidate learner-facing answer
-    ↓
-ResponseValidator → issues and required revisions
+Offline PromptBuilder preview and ResponseValidator checks
 ```
 
-The prototype does **not** generate an answer by itself, fact-check claims, call an external model, expose a hosted API, or represent a finished teaching application. Safety and response checks are deterministic first versions, not comprehensive professional classification. Substantial implementation work remains.
+The toolkit does **not** generate an answer, fact-check claims, call a model, expose a hosted API, or replace the host-executed Skill. Safety and response checks are deterministic first versions, not comprehensive professional classification.
 
 Routing covers tested English and Chinese categories, including explicit lens requests and neutral fallback for generic simplicity requests. Pattern matching remains lexical rather than semantic, so aliases and paraphrases are not exhaustive.
 
@@ -128,13 +144,14 @@ mingren-skill prompt "What exactly does intelligence mean here?"
 mingren-skill validate-response "My chest hurts and I cannot breathe" --response "Wait and see."
 ```
 
-`plan` prints an `EngineResult`; `prompt` prints a provider-independent `PromptPackage`; `validate-response` reports deterministic issues and required revisions. For backward compatibility, `mingren-skill "input"` and `python -m mingren_skill "input"` still behave as `plan`.
-
-No provider SDK, network call, streaming layer, or API credential handling is included.
+`plan` prints `EngineResult`. `prompt` prints an offline `PromptPackage` preview for inspection. `validate-response` checks a supplied answer and prints deterministic issues and revision actions. For backward compatibility, `mingren-skill "input"` and `python -m mingren_skill "input"` still behave as `plan`.
 
 ## Documentation
 
 - [`SKILL.md`](SKILL.md): central behavior specification and response workflow
+- [`skill-manifest.yaml`](skill-manifest.yaml): runtime allowlist, capabilities, version, and offline requirements
+- [`docs/runtime_contract.md`](docs/runtime_contract.md): canonical host-execution contract
+- [`docs/installation.md`](docs/installation.md): generic host installation concepts
 - [`references/distillation-framework.md`](references/distillation-framework.md): standard for distilling a thinker lens
 - [`references/trigger-framework.md`](references/trigger-framework.md): trigger precedence, ambiguity, and non-trigger rules
 - [`references/response-framework.md`](references/response-framework.md): default teaching-response structure
@@ -143,6 +160,7 @@ No provider SDK, network call, streaming layer, or API credential handling is in
 - [`references/trigger_rules.yaml`](references/trigger_rules.yaml): executable rules, priorities, exits, and source links
 - [`examples/`](examples/): Chinese-first calibrated examples and a bad-versus-good comparison
 - [`evals/`](evals/): human-facing quality checks and machine-oriented cases
+- [`evals/host_cases.yaml`](evals/host_cases.yaml): API-free host behavior fixtures
 - [`evals/prompt_snapshots/`](evals/prompt_snapshots/): representative prompt regression expectations
 - [`docs/requirements_traceability.md`](docs/requirements_traceability.md): product requirements mapped to behavior, tests, and gaps
 - [`docs/behavior_alignment_review.md`](docs/behavior_alignment_review.md): audited prompt behavior and confirmed limitations
@@ -161,9 +179,7 @@ No provider SDK, network call, streaming layer, or API credential handling is in
 
 See the full [safety and quality boundaries](references/safety-boundaries.md).
 
-## Direction
-
-The near-term goal is to keep the Skill specification, source boundaries, evaluation cases, prompt snapshots, and Python prototype aligned. Later implementation work can connect a model provider and build a fuller learning experience without weakening correctness, attribution, or the four-lens scope.
+Current limitations: only four lenses are supported; routing is deterministic and keyword-based; the validator cannot prove factual correctness; host behavior varies and must be evaluated manually; provisional `TODO-SOURCE` items remain provisional.
 
 ## License
 

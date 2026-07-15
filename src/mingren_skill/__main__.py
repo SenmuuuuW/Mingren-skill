@@ -22,7 +22,7 @@ def build_parser() -> argparse.ArgumentParser:
     plan_parser = subparsers.add_parser("plan", help="Print the structured EngineResult JSON.")
     plan_parser.add_argument("input", help="User request to route")
 
-    prompt_parser = subparsers.add_parser("prompt", help="Print a provider-independent PromptPackage JSON.")
+    prompt_parser = subparsers.add_parser("prompt", help="Print an offline PromptPackage preview as JSON.")
     prompt_parser.add_argument("input", help="User request to route and package")
     prompt_parser.add_argument("--context", dest="conversation_context", help="Optional prior conversation context")
     prompt_parser.add_argument("--subject", help="Optional explicit subject label")

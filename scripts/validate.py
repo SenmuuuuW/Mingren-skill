@@ -5,8 +5,12 @@ from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
+import importlib.util
 import re
 import sys
+import tempfile
+import tomllib
 from pathlib import Path
 from typing import Sequence
 
@@ -14,10 +18,13 @@ import yaml
 
 REQUIRED_FILES = (
     "README.md", "CHANGELOG.md", "AGENTS.md", "pyproject.toml",
+    "SKILL.md", "skill-manifest.yaml", "README.zh-CN.md",
+    "docs/runtime_contract.md", "docs/installation.md",
     "docs/requirements_traceability.md",
     "docs/behavior_alignment_review.md",
     "references/distillation_framework.md", "references/safety_boundaries.md",
     "references/trigger_rules.yaml", "evals/failure_taxonomy.md", "evals/cases.yaml",
+    "evals/host_cases.yaml", "evals/manual_evaluation.md",
     "references/thinkers/feynman.md", "references/thinkers/socrates.md",
     "references/thinkers/von-neumann.md", "references/thinkers/laozi.md",
     "src/mingren_skill/__init__.py", "src/mingren_skill/models.py",
@@ -25,11 +32,12 @@ REQUIRED_FILES = (
     "src/mingren_skill/engine.py", "src/mingren_skill/safety.py",
     "src/mingren_skill/language.py", "src/mingren_skill/prompt_builder.py",
     "src/mingren_skill/response_validator.py",
-    "src/mingren_skill/__main__.py", "scripts/validate.py",
+    "src/mingren_skill/__main__.py", "scripts/validate.py", "scripts/build_skill_bundle.py",
     "scripts/__init__.py",
     "tests/test_loaders.py", "tests/test_router.py", "tests/test_engine.py",
     "tests/test_safety.py", "tests/test_validation.py", "tests/test_language.py",
     "tests/test_prompt_builder.py", "tests/test_response_validator.py", "tests/test_cli.py",
+    "tests/test_bundle_builder.py",
 )
 THINKER_HEADINGS = (
     "Source basis", "Core worldview", "Thinking pattern", "Teaching style",
@@ -48,6 +56,17 @@ CONFIDENCE = {"high", "medium", "low", "provisional"}
 FAILURE_IDS = {f"F{number:02d}" for number in range(1, 21)}
 TODO_FIELDS = ("claim", "preferred source type", "verification needed", "current confidence")
 SNAPSHOT_FIELDS = {"input", "selected_lenses", "applied_rules", "required_fragments"}
+HOST_CASE_FIELDS = {
+    "id", "user_input", "required_files", "expected_primary_lens",
+    "allowed_secondary_lenses", "required_behaviors", "forbidden_behaviors",
+    "safety_expectation", "language_expectation", "notes",
+}
+SUPPORTED_LENSES = {"feynman", "socrates", "von-neumann", "laozi"}
+FORBIDDEN_BUNDLE_PARTS = {
+    ".git", ".venv", "venv", "__pycache__", ".pytest_cache", "tests",
+    "scripts", "src", "build", "dist", ".env",
+}
+MARKDOWN_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 
 
 def _load_yaml(path: Path, errors: list[str]) -> object | None:
@@ -83,6 +102,160 @@ def _extract_string_set(path: Path, variable_name: str) -> set[str] | None:
             return None
         return set(value) if isinstance(value, (set, list, tuple)) else None
     return None
+
+
+def _validate_markdown_links(root: Path, files: list[str], errors: list[str]) -> None:
+    approved = {Path(item).as_posix() for item in files}
+    for relative in sorted(approved):
+        path = root / relative
+        if path.suffix.lower() != ".md" or not path.is_file():
+            continue
+        for raw_target in MARKDOWN_LINK_RE.findall(path.read_text(encoding="utf-8")):
+            target = raw_target.strip().split(maxsplit=1)[0].strip("<>")
+            if not target or target.startswith(("#", "http://", "https://", "mailto:")):
+                continue
+            file_target = target.split("#", 1)[0]
+            resolved = (path.parent / file_target).resolve()
+            try:
+                bundle_relative = resolved.relative_to(root).as_posix()
+            except ValueError:
+                errors.append(f"runtime link escapes repository: {relative} -> {target}")
+                continue
+            if bundle_relative not in approved and not any(item.startswith(bundle_relative.rstrip("/") + "/") for item in approved):
+                errors.append(f"runtime link is not included in bundle: {relative} -> {target}")
+
+
+def _validate_runtime(root: Path, rules_data: object | None, errors: list[str]) -> None:
+    manifest = _load_yaml(root / "skill-manifest.yaml", errors)
+    if not isinstance(manifest, dict):
+        errors.append("skill-manifest.yaml must contain a mapping")
+        return
+    required = manifest.get("required_files")
+    optional = manifest.get("optional_files")
+    if not isinstance(required, list) or not all(isinstance(item, str) for item in required):
+        errors.append("manifest required_files must be a list of paths")
+        return
+    if not isinstance(optional, list) or not all(isinstance(item, str) for item in optional):
+        errors.append("manifest optional_files must be a list of paths")
+        return
+    runtime_files = ["skill-manifest.yaml", *required, *optional]
+    for relative in required:
+        if not (root / relative).is_file():
+            errors.append(f"manifest required file is missing: {relative}")
+    for relative in runtime_files:
+        parts = Path(relative).parts
+        if Path(relative).is_absolute() or ".." in parts:
+            errors.append(f"invalid runtime allowlist path: {relative}")
+        if any(part in FORBIDDEN_BUNDLE_PARTS or part.endswith(".egg-info") for part in parts):
+            errors.append(f"development-only path in runtime allowlist: {relative}")
+    _validate_markdown_links(root, runtime_files, errors)
+
+    manifest_lenses = set(manifest.get("supported_lenses", []))
+    if manifest_lenses != SUPPORTED_LENSES:
+        errors.append("manifest supported lenses do not match the four canonical lenses")
+    reference_lenses = {path.stem for path in (root / "references" / "thinkers").glob("*.md")}
+    if reference_lenses != SUPPORTED_LENSES:
+        errors.append("thinker reference files do not match the four canonical lenses")
+    skill_text = (root / "SKILL.md").read_text(encoding="utf-8") if (root / "SKILL.md").is_file() else ""
+    for lens in SUPPORTED_LENSES:
+        if lens.replace("-", " ").lower() not in skill_text.lower() and lens.lower() not in skill_text.lower():
+            errors.append(f"SKILL.md does not declare supported lens: {lens}")
+    if isinstance(rules_data, dict) and isinstance(rules_data.get("rules"), list):
+        yaml_lenses: set[str] = set()
+        for rule in rules_data["rules"]:
+            if isinstance(rule, dict):
+                primary = rule.get("primary_lens")
+                if isinstance(primary, str) and primary != "none":
+                    yaml_lenses.add(primary)
+                yaml_lenses.update(item for item in rule.get("secondary_lenses", []) if isinstance(item, str))
+        unknown = yaml_lenses - SUPPORTED_LENSES
+        if unknown:
+            errors.append(f"trigger rules contain unsupported lenses: {', '.join(sorted(unknown))}")
+
+    mandatory_skill_phrases = (
+        "## Runtime contract", "## Trigger detection", "## Response workflow",
+        "## Exit and completion rules", "## Safety", "## Output style",
+        "## Failure prevention", "## Reference loading", "unsupported thinker",
+        "does not call an external model api",
+    )
+    lower_skill = skill_text.lower()
+    for phrase in mandatory_skill_phrases:
+        if phrase.lower() not in lower_skill:
+            errors.append(f"critical runtime rule missing from SKILL.md: {phrase}")
+
+    for flag in ("network_required", "api_key_required", "backend_required"):
+        if manifest.get(flag) is not False:
+            errors.append(f"manifest {flag} must be false")
+    runtime_docs = "\n".join(
+        (root / path).read_text(encoding="utf-8")
+        for path in ("SKILL.md", "docs/runtime_contract.md", "docs/installation.md")
+        if (root / path).is_file()
+    ).lower()
+    for phrase in ("no api key", "does not call an external model api"):
+        if phrase not in runtime_docs:
+            errors.append(f"runtime documentation is missing no-API statement: {phrase}")
+    forbidden_config = re.compile(r"OPENAI_API_KEY|ANTHROPIC_API_KEY|DEEPSEEK_API_KEY|MODEL_ENDPOINT|requests\.post|httpx\.", re.I)
+    for relative in runtime_files:
+        path = root / relative
+        if path.is_file() and forbidden_config.search(path.read_text(encoding="utf-8", errors="ignore")):
+            errors.append(f"provider or API configuration found in runtime file: {relative}")
+
+    try:
+        project_version = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    except (OSError, KeyError, tomllib.TOMLDecodeError):
+        project_version = None
+        errors.append("cannot read project version from pyproject.toml")
+    package_text = (root / "src/mingren_skill/__init__.py").read_text(encoding="utf-8")
+    package_match = re.search(r'__version__\s*=\s*["\']([^"\']+)', package_text)
+    skill_match = re.search(r"^version:\s*([^\s]+)", skill_text, re.MULTILINE)
+    versions = {project_version, manifest.get("version"), package_match.group(1) if package_match else None, skill_match.group(1) if skill_match else None}
+    if versions != {"0.1.0"}:
+        errors.append(f"version values are inconsistent: {sorted(str(item) for item in versions)}")
+    if not re.search(r"^## (?:v|\[)0\.1\.0", (root / "CHANGELOG.md").read_text(encoding="utf-8"), re.MULTILINE):
+        errors.append("CHANGELOG.md does not contain version 0.1.0")
+
+    host_data = _load_yaml(root / "evals/host_cases.yaml", errors)
+    if not isinstance(host_data, dict) or not isinstance(host_data.get("cases"), list):
+        errors.append("host_cases.yaml must contain a top-level cases list")
+    else:
+        host_cases = host_data["cases"]
+        if len(host_cases) < 15:
+            errors.append("host_cases.yaml must contain at least 15 cases")
+        seen: set[str] = set()
+        for index, case in enumerate(host_cases):
+            if not isinstance(case, dict):
+                errors.append(f"host case {index} is not a mapping")
+                continue
+            missing = HOST_CASE_FIELDS - case.keys()
+            if missing:
+                errors.append(f"host case {index} missing fields: {', '.join(sorted(missing))}")
+            case_id = case.get("id")
+            if not isinstance(case_id, str) or not case_id:
+                errors.append(f"host case {index} has invalid ID")
+            elif case_id in seen:
+                errors.append(f"duplicate host case ID: {case_id}")
+            else:
+                seen.add(case_id)
+            for relative in case.get("required_files", []):
+                if not isinstance(relative, str) or not (root / relative).is_file():
+                    errors.append(f"host case {case_id or index} references missing file: {relative}")
+
+    try:
+        builder_path = root / "scripts" / "build_skill_bundle.py"
+        spec = importlib.util.spec_from_file_location("mingren_bundle_builder", builder_path)
+        if spec is None or spec.loader is None:
+            raise OSError(f"cannot load bundle builder: {builder_path}")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        build_skill_bundle = module.build_skill_bundle
+        with tempfile.TemporaryDirectory() as first_dir, tempfile.TemporaryDirectory() as second_dir:
+            first = build_skill_bundle(root, Path(first_dir))
+            second = build_skill_bundle(root, Path(second_dir))
+            if hashlib.sha256(first.zip_path.read_bytes()).digest() != hashlib.sha256(second.zip_path.read_bytes()).digest():
+                errors.append("generated runtime bundle is not reproducible")
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        errors.append(f"cannot reproduce runtime bundle: {exc}")
 
 
 def validate_repository(root: Path) -> list[str]:
@@ -148,6 +321,8 @@ def validate_repository(root: Path) -> list[str]:
                         }
                         if anchor not in anchors:
                             errors.append(f"trigger rule {rule_id} references missing anchor: {source_ref}")
+
+    _validate_runtime(root, rules_data, errors)
 
     taxonomy = root / "evals" / "failure_taxonomy.md"
     if taxonomy.is_file():

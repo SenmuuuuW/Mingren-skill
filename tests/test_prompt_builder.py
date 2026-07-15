@@ -91,7 +91,7 @@ def test_output_mode_and_issue_severity_are_validated() -> None:
     with pytest.raises(ModelValidationError, match="output_mode"):
         PromptContext(
             user_input="Tell me a joke", language="english", engine_result=result,
-            output_mode="provider_specific",  # type: ignore[arg-type]
+            output_mode="remote_generation",  # type: ignore[arg-type]
         )
     with pytest.raises(ModelValidationError, match="severity"):
         ValidationIssue(
