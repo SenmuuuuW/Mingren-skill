@@ -176,6 +176,8 @@ Technical artifacts are intentionally separate from the authoritative teaching s
 - `evals/cases.yaml` and `evals/failure_taxonomy.md` — machine-oriented cases and detailed failure tests
 - `tests/` — loader, router, engine, safety, and validator behavior tests
 - `AGENTS.md` — coding-agent contribution requirements
+- `docs/requirements_traceability.md` — product requirements mapped to executable behavior, tests, and remaining gaps
+- `docs/behavior_alignment_review.md` — Git provenance, intended behavior, realistic prompt results, and confirmed gaps
 
 When product Markdown and implementation behavior diverge, the product definitions in `SKILL.md` and the hyphenated framework documents are authoritative; update code, evaluation cases, and tests together.
 

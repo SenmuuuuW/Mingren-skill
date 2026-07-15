@@ -27,3 +27,12 @@ def test_manipulative_socratic_questioning_is_prohibited() -> None:
     assert decision.allowed is False
     assert "manipulative questioning" in decision.applicable_boundaries
     assert any("corner" in item for item in decision.prohibited_behavior)
+
+
+def test_chinese_urgent_medical_request_is_overridden() -> None:
+    decision = evaluate_safety("我胸口剧痛而且无法呼吸")
+    assert decision.allowed is False
+    assert decision.risk_level == "high"
+    assert "medical" in decision.applicable_boundaries
+    assert "urgent non-intervention" in decision.applicable_boundaries
+    assert any("urgent protective action" in item for item in decision.required_behavior)

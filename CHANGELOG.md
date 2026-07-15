@@ -5,6 +5,9 @@
 - Added the typed `mingren_skill` Python package, deterministic rule router, safety precedence, and structured plan engine.
 - Added machine-readable trigger and evaluation cases, pytest coverage, repository validation, packaging, and JSON CLIs.
 - Preserved the v0.1.0 product specification, bilingual documentation, examples, quality rubric, and research boundaries.
+- Aligned generic requests with neutral fallback, added direct teaching-intent and English assumption routing, and added transparent Chinese patterns across existing rule categories.
+- Added English and Chinese urgent-medical detection and safety precedence tests.
+- Added product-to-implementation requirements traceability with explicit implementation gaps and decisions.
 
 ## v0.1.0 - Initial MVP
 

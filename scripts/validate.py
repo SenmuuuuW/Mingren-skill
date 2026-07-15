@@ -13,6 +13,8 @@ import yaml
 
 REQUIRED_FILES = (
     "README.md", "CHANGELOG.md", "AGENTS.md", "pyproject.toml",
+    "docs/requirements_traceability.md",
+    "docs/behavior_alignment_review.md",
     "references/distillation_framework.md", "references/safety_boundaries.md",
     "references/trigger_rules.yaml", "evals/failure_taxonomy.md", "evals/cases.yaml",
     "references/thinkers/feynman.md", "references/thinkers/socrates.md",

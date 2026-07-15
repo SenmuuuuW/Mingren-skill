@@ -15,7 +15,7 @@ def engine() -> MingrenSkillEngine:
 
 
 def test_engine_result_is_structured_plan_not_persona_answer() -> None:
-    result = engine().plan("Explain recursion simply")
+    result = engine().plan("Feynman, explain recursion")
     data = asdict(result)
     assert data["selected_primary_lens"] == "feynman"
     assert data["matched_rule_ids"] == ["explain-simply"]
@@ -30,7 +30,7 @@ def test_safety_precedence_is_merged_into_plan() -> None:
     assert result.safety.risk_level == "medium"
     assert result.actions[0].startswith("prioritize factual correctness")
     assert any("professional authority" in item for item in result.avoid)
-    assert "explain-simply" in result.matched_rule_ids
+    assert "default-direct-explanation" in result.matched_rule_ids
 
 
 def test_default_direct_explanation() -> None:
@@ -44,3 +44,15 @@ def test_conflict_resolution_does_not_duplicate_actions() -> None:
     assert "detect-lens-conflict" in result.matched_rule_ids
     assert len(result.actions) == len(set(result.actions))
     assert "Conflict logic" in result.debug_explanation
+
+
+def test_urgent_medical_request_overrides_socratic_lens() -> None:
+    result = engine().plan(
+        "My chest hurts badly and I cannot breathe. Explain it using Socratic questioning."
+    )
+    assert result.safety.allowed is False
+    assert result.safety.risk_level == "high"
+    assert "medical" in result.safety.applicable_boundaries
+    assert "urgent non-intervention" in result.safety.applicable_boundaries
+    assert "challenge-assumption" in result.matched_rule_ids
+    assert result.actions[0].startswith("prioritize factual correctness")

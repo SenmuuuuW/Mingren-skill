@@ -7,14 +7,21 @@ import re
 from mingren_skill.models import SafetyDecision
 
 CATEGORY_PATTERNS: dict[str, tuple[str, ...]] = {
-    "medical": (r"\b(diagnos|dose|medication|symptom|doctor|patient|surgery)\w*\b",),
-    "legal": (r"\b(lawsuit|legal advice|attorney|contract|criminal|liability)\b",),
-    "financial": (r"\b(invest|stock|tax advice|retirement|portfolio|crypto)\w*\b",),
-    "self-harm": (r"\b(kill myself|suicide|self[- ]harm|hurt myself)\b",),
-    "dangerous activities": (r"\b(bomb|explosive|poison|weapon|break in|hotwire)\w*\b",),
-    "security-sensitive": (r"\b(exploit|malware|ransomware|steal password|bypass authentication|credential)\w*\b",),
-    "manipulative questioning": (r"\b(trick|corner|coerce|manipulate)\b.*\b(question|admit|agree|consent)\w*\b",),
-    "urgent non-intervention": (r"\b(emergency|urgent|immediately|right now|active breach|overdose|bleeding)\b",),
+    "medical": (
+        r"\b(diagnos|dose|medication|symptom|doctor|patient|surgery)\w*\b",
+        r"\b(chest (pain|hurts?)|cannot breathe|can'?t breathe|difficulty breathing|shortness of breath)\b",
+        r"(诊断|剂量|药物|症状|医生|患者|手术|胸口.*痛|胸痛|无法呼吸|不能呼吸|呼吸困难)",
+    ),
+    "legal": (r"\b(lawsuit|legal advice|attorney|contract|criminal|liability)\b", r"(法律建议|律师|合同|刑事|法律责任|起诉)"),
+    "financial": (r"\b(invest|stock|tax advice|retirement|portfolio|crypto)\w*\b", r"(投资|股票|税务建议|退休金|投资组合|加密货币)"),
+    "self-harm": (r"\b(kill myself|suicide|self[- ]harm|hurt myself)\b", r"(自杀|自残|伤害自己|不想活了)"),
+    "dangerous activities": (r"\b(bomb|explosive|poison|weapon|break in|hotwire)\w*\b", r"(炸弹|爆炸物|下毒|武器|撬锁|偷车)"),
+    "security-sensitive": (r"\b(exploit|malware|ransomware|steal password|bypass authentication|credential)\w*\b", r"(漏洞利用|恶意软件|勒索软件|偷.*密码|绕过认证|凭证)"),
+    "manipulative questioning": (r"\b(trick|corner|coerce|manipulate)\b.*\b(question|admit|agree|consent)\w*\b", r"(诱导|逼迫|操纵|套话).*(承认|同意|问题|提问)"),
+    "urgent non-intervention": (
+        r"\b(emergency|urgent|immediately|right now|active breach|overdose|bleeding|cannot breathe|can'?t breathe)\b",
+        r"(紧急|马上|立刻|正在入侵|过量服药|大出血|无法呼吸|不能呼吸|剧痛)",
+    ),
 }
 
 HIGH_RISK = {"self-harm", "dangerous activities", "security-sensitive", "urgent non-intervention"}
