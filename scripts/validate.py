@@ -26,10 +26,9 @@ REQUIRED_FILES = (
     "tests/test_safety.py", "tests/test_validation.py",
 )
 THINKER_HEADINGS = (
-    "Scope", "Core Lens", "Reliable Sources", "How They Explain",
-    "How They Ask Questions", "How They Simplify or Structure Complex Problems",
-    "Recurring Principles", "Trigger Candidates", "Misconceptions to Avoid",
-    "Open Research Questions",
+    "Source basis", "Core worldview", "Thinking pattern", "Teaching style",
+    "Explanation method", "Questioning method", "Best subjects", "Weak subjects",
+    "Trigger phrases", "Response structure", "Example response", "Safety boundaries",
 )
 RULE_FIELDS = {
     "id", "description", "triggers", "primary_lens", "secondary_lenses", "actions",

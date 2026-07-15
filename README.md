@@ -1,95 +1,184 @@
-# Source-Grounded Thinker Lenses
+<div align="center">
 
-This Python 3.11+ project converts recurring reasoning methods associated with Feynman, Socrates, John von Neumann, and Laozi into bounded, testable Skill behaviors. It deterministically selects applicable rules and returns a structured reasoning plan; it does not generate the final natural-language answer.
+# 🧠 Famous Teacher Skill
 
-The lenses are reasoning interventions: clarify a definition, expose an understanding gap, change a representation, or inspect second-order effects. They are not personalities, roleplay modes, biographies, quote collections, or substitutes for evidence.
+**Teach any subject through distilled thinker lenses.**
 
-## Architecture
+English | [中文](README.zh-CN.md)
 
-The runtime is intentionally small and transparent:
+![License](https://img.shields.io/badge/license-MIT-2ea44f)
+![Markdown only](https://img.shields.io/badge/format-Markdown--only-111111)
+![AI Skill](https://img.shields.io/badge/type-AI%20Skill-2563eb)
+![Distilled lenses](https://img.shields.io/badge/method-distilled%20thinker%20lenses-d97706)
+![MVP](https://img.shields.io/badge/MVP-4%20thinkers-7c3aed)
 
-- `models.py` defines validated dataclasses for rules, matches, selections, safety decisions, and engine results.
-- `loaders.py` strictly parses YAML and resolves source references.
-- `router.py` matches explicit keywords and patterns, ranks rules by match strength and priority, and flags incompatible lenses.
-- `safety.py` applies keyword-based safety precedence. It is explicitly not a complete professional safety classifier.
-- `engine.py` combines compatible actions, prohibitions, exits, and safety requirements into a structured plan.
-- `__main__.py` exposes JSON output through the module and console CLIs.
+</div>
 
-## Trigger Selection
+## ✨ What is this?
 
-`references/trigger_rules.yaml` matches task signals to ordered actions. A rule must stop when its exit condition is met. Direct explanation is the default when questioning would add friction, and no lens applies universally. Compatible lenses may be sequenced or combined; incompatible actions are resolved using the conflict rule.
+Famous Teacher Skill is a cross-subject AI learning Skill that explains real academic ideas through distilled thinker lenses.
 
-Safety and factual correctness always override thinker lenses. Professional standards govern high-stakes domains.
+It lets a learner ask:
 
-## Repository Structure
+- “Feynman, teach me gradient descent.”
+- “Socrates, question me through this proof.”
+- “Laozi, teach me calculus.”
+- “Explain neural networks through von Neumann-style structure.”
 
-- `references/distillation_framework.md`: evidence and conversion process
-- `references/thinkers/`: consistent thinker research records
-- `references/trigger_rules.yaml`: machine-readable behavior rules
-- `references/safety_boundaries.md`: hard constraints and examples
-- `evals/failure_taxonomy.md`: failure definitions and tests
-- `src/mingren_skill/`: typed Python runtime
-- `evals/cases.yaml`: behavior and safety evaluation fixtures
-- `tests/`: pytest behavior and validation coverage
-- `scripts/validate.py`: repository, Markdown, YAML, and source-reference validation
-- `AGENTS.md`: contribution rules for coding agents
+The Skill does not pretend to be those people. It distills useful reasoning patterns, teaching moves, conceptual frames, and questioning methods, then reconnects every answer to the actual subject.
 
-## Setup and Installation
+> The lens shapes the path to understanding. It does not replace academic truth.
 
-Python 3.11 or newer is required.
+## 🧩 Why this is different
+
+| Normal tutor | Famous Teacher Skill |
+| --- | --- |
+| Explains in a generic style | Explains through a selected thinker lens |
+| May copy personality or tone | Distills reasoning and teaching method |
+| Often gives the answer directly | Guides understanding with lens-specific moves |
+| Can become roleplay-first | Remains learning-first |
+| Treats style as decoration | Connects style to a repeatable reasoning structure |
+
+This is not a celebrity chatbot, persona simulator, or quotation generator.
+
+## 🧠 First four lenses
+
+Version 0.1 deliberately supports only four lenses:
+
+| Lens | Best for | Teaching pattern |
+| --- | --- | --- |
+| Feynman | Intuition, STEM foundations, formulas | Plain language, analogy, concrete examples, simple checks |
+| von Neumann | CS, AI, systems, algorithms | Inputs, outputs, states, rules, models, modular structure |
+| Socrates | Definitions, proof, reasoning | Questions, assumptions, counterexamples, guided discovery |
+| Laozi | Abstraction, change, relationships | Contrast, reversal, balance, relation, change |
+
+Each lens has explicit strengths, weak contexts, source boundaries, response steps, and failure risks.
+
+## 🚀 Quick examples
+
+```text
+用费曼方式解释梯度下降
+老子教我微积分
+让苏格拉底追问我这道证明题
+用冯诺伊曼方式拆解操作系统进程
+```
+
+An answer normally names the lens once, teaches the real concept, gives a small example, and ends with one useful check question or next step.
+
+## 🔍 How it works
+
+```text
+User question
+    ↓
+Detect topic and learning intent
+    ↓
+Detect or clarify the thinker lens
+    ↓
+Apply the distilled teaching pattern
+    ↓
+Reconnect to the academic concept
+    ↓
+Give one small example
+    ↓
+Ask one focused check question
+```
+
+Direct thinker names take priority. Distinctive method requests can suggest a lens. Subject alone never silently selects one; an ambiguous request receives neutral teaching or one focused clarification.
+
+## 🧭 Design principles
+
+- **Correctness first.** Lens flavor never overrides accepted definitions, evidence, or notation.
+- **Method over mannerism.** The response uses intellectual moves, not costume language.
+- **Small and inspectable.** One good example is better than a pile of vague analogies.
+- **Diagnosis before excess.** Address the learner's visible obstacle instead of dumping a full course.
+- **One next step.** End with a check that reveals whether the idea transferred.
+- **Explicit limits.** Mark analogy boundaries and historical uncertainty.
+
+## 📚 Documentation map
+
+- [`README.md`](README.md) — English project landing page
+- [`README.zh-CN.md`](README.zh-CN.md) — Chinese project landing page
+- [`SKILL.md`](SKILL.md) — central behavior specification and response workflow
+- [`references/distillation-framework.md`](references/distillation-framework.md) — standard for turning a thinker into a teaching lens
+- [`references/trigger-framework.md`](references/trigger-framework.md) — direct, stylistic, intent, and ambiguity rules
+- [`references/response-framework.md`](references/response-framework.md) — the default six-move answer structure
+- [`references/safety-boundaries.md`](references/safety-boundaries.md) — identity, source, correctness, and high-stakes limits
+- [`references/thinkers/`](references/thinkers/) — the four detailed lens specifications
+- [`examples/`](examples/) — Chinese-first calibrated responses and a bad-versus-good comparison
+- [`evals/`](evals/) — quality rubric and failure taxonomy
+- [`MAINTENANCE.md`](MAINTENANCE.md) — scope and contribution rules
+- [`CHANGELOG.md`](CHANGELOG.md) — release history
+- [`LICENSE`](LICENSE) — MIT license terms
+
+## 🗂️ Repository structure
+
+```text
+Mingren-skill/
+├── SKILL.md
+├── README.md
+├── README.zh-CN.md
+├── CHANGELOG.md
+├── MAINTENANCE.md
+├── LICENSE
+├── references/
+│   ├── distillation-framework.md
+│   ├── trigger-framework.md
+│   ├── response-framework.md
+│   ├── safety-boundaries.md
+│   └── thinkers/
+├── examples/
+└── evals/
+```
+
+Version 0.1's authoritative product behavior remains defined in Markdown. The repository now also includes a small Python rule engine that turns explicit task signals into inspectable structured plans. It has no website, API service, backend, database, hidden memory, or retrieval system.
+
+## 🛡️ Boundaries
+
+- No literal impersonation or “I am Feynman” claims
+- No fabricated quotations, citations, or historical views
+- No long copyrighted quotations
+- No style-over-correctness answers
+- No vague mystical substitute for academic explanation
+- No living- or private-person imitation in V0.1
+- No database, RAG, backend, or celebrity marketplace
+- No thinkers beyond the first four in V0.1
+
+See the full [safety and quality boundaries](references/safety-boundaries.md).
+
+## 🔖 Status
+
+This repository contains the focused `v0.1.0` MVP. Quality and behavioral boundaries take priority over lens count.
+
+## 🐍 Python rule engine
+
+The `src/mingren_skill/` package is a deterministic implementation layer for the product rules. It validates trigger metadata, applies transparent keyword and pattern routing, gives safety and factual correctness precedence, resolves compatible lenses, and returns a structured plan rather than a roleplayed answer. It does not call an external LLM and is not a complete professional safety classifier.
+
+Install and verify it with Python 3.11 or newer:
 
 ```sh
 python -m pip install -e ".[dev]"
+python scripts/validate.py
+pytest
 ```
 
-PyYAML is the only runtime dependency. Pytest is installed by the `dev` extra.
-
-## CLI Usage
-
-Both forms print a JSON-serialized `EngineResult`:
+Both CLI forms print a JSON `EngineResult`:
 
 ```sh
 python -m mingren_skill "Explain recursion simply"
 mingren-skill "Break this system into modules"
 ```
 
-The JSON includes selected lenses, matched rule IDs, ordered actions, prohibited behaviors, exit conditions, safety notes, confidence, and a debug explanation.
+Technical artifacts are intentionally separate from the authoritative teaching specification:
 
-## Rule Format
+- `references/trigger_rules.yaml` — executable rules, priorities, exits, and source links
+- `references/distillation_framework.md` — implementation evidence metadata and acceptance rules
+- `references/safety_boundaries.md` — implementation-specific hard boundaries
+- `evals/cases.yaml` and `evals/failure_taxonomy.md` — machine-oriented cases and detailed failure tests
+- `tests/` — loader, router, engine, safety, and validator behavior tests
+- `AGENTS.md` — coding-agent contribution requirements
 
-Every entry in `references/trigger_rules.yaml` requires:
+When product Markdown and implementation behavior diverge, the product definitions in `SKILL.md` and the hyphenated framework documents are authoritative; update code, evaluation cases, and tests together.
 
-```yaml
-- id: explain-simply
-  priority: 60
-  description: "..."
-  triggers: ["..."]
-  primary_lens: feynman
-  secondary_lenses: []
-  actions: ["..."]
-  avoid: ["..."]
-  exit_conditions: ["..."]
-  safety_notes: ["..."]
-  confidence: medium
-  source_refs: ["references/thinkers/feynman.md#replace-a-label-with-a-mechanism"]
-```
+## 📄 License
 
-Allowed confidence values are `high`, `medium`, `low`, and `provisional`.
-
-## Adding a Method or Rule
-
-1. Add the method to the appropriate thinker file with all evidence metadata, applicability limits, examples, and confidence.
-2. Use `TODO-SOURCE` instead of guessing when evidence is incomplete.
-3. Add or update a trigger with actions, prohibitions, exit conditions, safety notes, and source references.
-4. Add a success/failure evaluation and changelog entry.
-5. Add evaluation cases and behavior tests for the change.
-6. Run validation and tests:
-
-```sh
-python scripts/validate.py
-pytest
-```
-
-## Research Limitations
-
-This first version deliberately marks several generalizations as provisional. Von Neumann reasoning-style claims are especially vulnerable to retrospective anecdote; Socratic evidence depends on mediated ancient texts; Laozi interpretation depends on textual and translation choices; and some popular Feynman teaching claims exceed the available primary evidence. See each thinker's open research questions.
+Released under the [MIT License](LICENSE).

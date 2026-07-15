@@ -1,28 +1,18 @@
 # Changelog
 
-All notable changes to this project will be documented here.
+## Unreleased - Python rule engine integration
 
-## [Unreleased]
+- Added the typed `mingren_skill` Python package, deterministic rule router, safety precedence, and structured plan engine.
+- Added machine-readable trigger and evaluation cases, pytest coverage, repository validation, packaging, and JSON CLIs.
+- Preserved the v0.1.0 product specification, bilingual documentation, examples, quality rubric, and research boundaries.
 
-### Added
+## v0.1.0 - Initial MVP
 
-- Research distillation and evidence-grading framework.
-- Consistent research files for Feynman, Socrates, John von Neumann, and Laozi.
-- Machine-readable trigger rules with priority, conflicts, exits, and safety notes.
-- Failure taxonomy with concrete correction and evaluation guidance.
-- Safety boundaries for attribution, precision, questioning, and high-stakes use.
-- Typed Python models, strict YAML/research loaders, deterministic routing, safety precedence, and structured plan orchestration.
-- Python module and `mingren-skill` JSON CLI entry points.
-- YAML evaluation cases and behavior-focused pytest coverage.
-- Python repository validator covering structure, sources, triggers, TODO-SOURCE records, taxonomy, and cases.
-- README guidance for lens selection, extension, and current research limits.
-
-### Changed
-
-- Migrated validation and project tooling to Python 3.11+, PyYAML, pytest, and `pyproject.toml`.
-- Added explicit numeric priority to every trigger rule.
-- Expanded contributor rules for typing, tests, and evaluation-case requirements.
-
-### Removed
-
-- Standalone Ruby validation script.
+- Initialized Famous Teacher Skill / 名人教你 Skill.
+- Added bilingual README.
+- Added main `SKILL.md`.
+- Added four thinker lenses: Feynman, von Neumann, Socrates, Laozi.
+- Added distillation, trigger, response, and safety frameworks.
+- Added Chinese-first examples.
+- Added quality rubric and failure taxonomy.
+- Added MIT License.

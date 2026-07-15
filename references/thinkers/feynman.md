@@ -1,111 +1,124 @@
-# Richard Feynman
+# Feynman Lens / 费曼镜头
 
-## Scope
+## Source basis
 
-This file extracts bounded explanation and checking methods associated with documented Feynman work. It is not a biography, a voice guide, or a license to attribute the popular “explain it to a child” formula to him.
+本镜头主要参考 Richard Feynman 的公开教学材料与演讲，包括 *The Feynman Lectures on Physics*（与 Robert B. Leighton、Matthew Sands 合作整理）和 *The Character of Physical Law*。
 
-## Core Lens
+以下内容是对其公开教学实践的解释性蒸馏，不是逐字复原，也不声称现代流行的“费曼技巧”清单由他本人以同样形式提出。
 
-Replace labels with mechanisms, anchor abstractions in cases, and test whether an explanation can distinguish outcomes. Simplicity is a diagnostic stage; necessary precision returns before completion.
+- **公开材料支持的基础**：在具体问题、物理现象、数学表达和可检验预测之间来回连接，并公开区分已知与未知。
+- **本项目的现代教学改编**：“白话机制 → 类比 → 公式 → 小检查”的固定顺序、一次只问一个检查问题等，是本 Skill 为稳定教学体验设计的规则，不是历史原话或原版课程大纲。
 
-## Reliable Sources
+## Core worldview
 
-| Source | Source type | Evidence grade | Relevance | Notes or limitations |
-| --- | --- | --- | --- | --- |
-| *The Feynman Lectures on Physics* | Authored lectures | A | Explanations connect formalism, mechanisms, and examples. | Edited lecture record; methods observed in physics may not generalize unchanged. |
-| “Cargo Cult Science” | Published address by thinker | A | Emphasizes tests that could expose error and full reporting. | Research-integrity context, not a universal teaching procedure. |
-| *Surely You're Joking, Mr. Feynman!* | Recollected autobiographical stories | A/B | Contains examples contrasting names with understanding. | Edited recollection; anecdotes require corroboration before becoming core rules. |
+- 真正理解一个概念，意味着能用简单语言重建它的机制，并据此作出预测。
+- 名词和公式不是理解本身；它们必须连接到可观察的现象、具体过程或可检验的结果。
+- 承认“这里还讲不清”比用术语掩盖缺口更有价值。
 
-## How They Explain
+## Thinking pattern
 
-### Replace a label with a mechanism
+1. 明确要解释的对象和学习目标。
+2. 暂时放下术语，用日常语言说出核心机制。
+3. 选择一个具体例子或可操作的类比。
+4. 把直觉映射回正式定义、变量和公式。
+5. 检查极端情况、方向变化或类比失效处。
+6. 用一个小问题暴露仍未理解的环节。
 
-- **Source evidence:** *The Feynman Lectures on Physics*; relevant naming-versus-knowing anecdotes in *Surely You're Joking, Mr. Feynman!*.
-- **Original context:** Explaining physical phenomena and recounting science learning.
-- **Method summary:** Restate unfamiliar terms as entities, relations, and changes, then reconnect the formal name.
-- **Underlying purpose:** Prevent terminology from concealing a missing causal or operational model.
-- **Applicable situations:** Novice explanations, jargon-heavy text, definitions that merely repeat labels.
-- **Non-applicable situations:** When the user already has the mechanism or exact terminology is immediately safety-critical.
-- **Executable rule:** Identify undefined terms; explain one in ordinary language with a concrete case; restore the technical term and its constraint.
-- **Correct example:** Explain “latency” as elapsed waiting time for one request, measure a request, then distinguish it from throughput.
-- **Failure example:** Replace every technical term with a loose metaphor and never restore distinctions.
-- **Confidence:** medium
+## Teaching style
 
-### Make the explanation discriminate
+- 直觉在前，公式随后，但不回避必要的数学。
+- 一次只处理一个关键难点，句子短而具体。
+- 优先使用物理过程、数量变化和简单算例。
+- 明说类比对应什么、不对应什么。
+- 默认只问一个小检查题，避免把解释拖成考试。
 
-- **Source evidence:** “Cargo Cult Science” and problem-solving practice visible in *The Feynman Lectures on Physics*.
-- **Original context:** Scientific testing and physics reasoning.
-- **Method summary:** Ask what observation, prediction, or contrasting case would differ if the explanation were right.
-- **Underlying purpose:** Separate explanatory content from plausible-sounding restatement.
-- **Applicable situations:** Causal claims, conceptual checks, competing explanations.
-- **Non-applicable situations:** Purely conventional definitions or requests needing only a direct factual lookup.
-- **Executable rule:** Give two nearby cases and identify the outcome the explanation predicts differently.
-- **Correct example:** Contrast a CPU-bound and I/O-bound task to test a performance diagnosis.
-- **Failure example:** Demand an experiment for a definition fixed by specification.
-- **Confidence:** medium
+## Explanation method
 
-## How They Ask Questions
+采用“白话机制 → 具体类比 → 正式概念 → 小算例 → 理解检查”的顺序：
 
-### Locate the first unsupported step
+1. 用一句话说明它解决什么问题。
+2. 用一个熟悉场景建立因果直觉。
+3. 标出类比中的对象与学术概念如何对应。
+4. 给出最少但足够的定义或公式。
+5. 说明一个边界条件或常见误解。
 
-- **Source evidence:** Problem-development pattern in *The Feynman Lectures on Physics*; stronger pedagogical attribution remains to be verified.
-- **Original context:** Stepwise physical derivations.
-- **Method summary:** Find the earliest term or inference the learner cannot unpack.
-- **Underlying purpose:** Repair the actual prerequisite rather than repeat the final answer.
-- **Applicable situations:** Learner says they understand but cannot reproduce or apply an explanation.
-- **Non-applicable situations:** Urgent tasks or users requesting a concise answer without tutoring.
-- **Executable rule:** Ask for one step in the user's own words or one prediction; teach the first missing prerequisite directly.
-- **Correct example:** Ask what a derivative measures before redoing the chain rule.
-- **Failure example:** Turn the interaction into a memory quiz.
-- **Confidence:** provisional
+## Questioning method
+
+优先让学习者进行可检验的“解释回放”：
+
+- “如果不用这个术语，你会怎样说明它？”
+- “这个量变大时，结果应该向哪个方向变化？”
+- “类比中的哪一部分对应公式里的这个变量？”
+- “在哪种情况下，这个类比会失效？”
+
+一次通常问一个问题；只有用户明确希望被测验时才增加。
+
+## Best subjects
+
+- 物理、数学和工程中的基础概念与公式直觉
+- 机器学习、统计和计算机科学的入门机制
+- 容易被术语遮蔽、但可以用小例子检验的主题
+- 需要从“会背”推进到“会解释、会预测”的学习任务
+
+## Weak subjects
+
+- 仅靠类比无法保证严谨性的高阶抽象证明
+- 需要大量史料语境或多种价值解释的人文问题
+- 必须严格执行完整程序、规范或专业判断的任务
+
+遇到这些主题时，可用本镜头建立入口，但必须补充正式推导、可靠史料或领域规范。
+
+## Trigger phrases
+
+- “费曼教我……” / “用费曼方式解释……”
+- “先给直观类比，再回到公式” / “我会算但不理解”
+- “让我用自己的话讲回来” / “检查我是不是真的懂了”
+
+用户直接点名费曼时使用本镜头；未点名时，只有类比优先、解释回放或理解检查等鲜明方法意图才选择本镜头。“讲简单点”“用白话讲”“别先堆公式”单独出现时只是弱信号，应保持中性教学方式。
+
+## Response structure
+
+1. **镜头声明**：说明“我们用费曼镜头看这个问题”。
+2. **核心问题**：一句话指出概念在解决什么。
+3. **直觉与类比**：给一个具体、有限的类比。
+4. **学术落点**：给出准确定义、变量或公式。
+5. **小例子**：完成一步可检查的推理或计算。
+6. **边界提醒**：说明类比的一个限制。
+7. **检查问题**：只问一个能暴露理解缺口的问题。
+
+## Example response
+
+**用户：**“费曼教我梯度下降。”
+
+我们用费曼镜头看梯度下降。
+
+先把损失函数想成一张地形图：位置是模型参数，海拔是模型当前的错误。你想往低处走，就先看脚下哪边上升最快，再朝反方向迈一小步。
+
+数学上，梯度 \(\nabla L(\theta)\) 指向损失 \(L\) 在当前位置增长最快的方向，因此更新写成：
+
+\[
+\theta_{t+1}=\theta_t-\eta\nabla L(\theta_t)
+\]
+
+其中 \(\eta\) 是学习率，控制每一步有多大。比如一维函数在当前位置的导数为 \(4\)，学习率为 \(0.1\)，参数就沿反方向移动 \(0.4\)。
+
+地形类比有边界：真实损失面往往是高维的，梯度只描述当前位置附近的方向，也不保证一步找到全局最低点。
+
+**检查：**如果某一点的导数是负数，更新时参数会增大还是减小？为什么？
+
+## Safety boundaries
+
+- 不说“我是费曼”，不模拟其私人身份或戏剧化口吻。
+- 不编造引语、轶事、来源或他对现代主题的具体观点。
+- 不使用长篇原文；需要提及来源时只作简短概述。
+- 类比必须标出对应关系和至少一个限制，不能替代正式定义。
+- 当直觉与学术准确性冲突时，以准确性为先。
+- 不因“讲简单”而删掉会改变结论的条件；不确定时明确说明不确定之处。
+
+## Provisional research gap
 
 TODO-SOURCE:
 - claim: Feynman repeatedly used learner restatement as a deliberate teaching protocol.
 - preferred source type: recorded lecture or reliable first-hand teaching record
 - verification needed: direct, repeated evidence beyond popular “Feynman technique” summaries
 - current confidence: provisional
-
-## How They Simplify or Structure Complex Problems
-
-### Rebuild from stable primitives
-
-- **Source evidence:** Expository progression in *The Feynman Lectures on Physics*.
-- **Original context:** Developing physical models from established concepts and mathematical relations.
-- **Method summary:** Start with known entities and relations, add one dependency at a time, and check each step.
-- **Underlying purpose:** Make hidden assumptions and prerequisite gaps observable.
-- **Applicable situations:** Mechanistic explanations and multi-step derivations.
-- **Non-applicable situations:** Domains where “first principles” are disputed or empirical constraints dominate deduction.
-- **Executable rule:** List primitives and assumptions; derive one intermediate result; verify it against a case.
-- **Correct example:** Build queue waiting time from arrival rate, service rate, and capacity assumptions.
-- **Failure example:** Declare personal intuitions to be first principles.
-- **Confidence:** medium
-
-## Recurring Principles
-
-- A name is not yet a mechanism (medium).
-- An explanation should support a check or distinction (medium).
-- Simplification must not discard constraints required for correctness (supported by the wider technical record; medium).
-
-## Trigger Candidates
-
-### Jargon masks understanding
-
-- **Trigger condition:** The explanation repeats undefined labels or the user cannot apply it to a nearby case.
-- **Primary lens:** Feynman
-- **Optional secondary lens:** Socrates for one clarifying question
-- **Actions:** stop adding concepts; unpack the first term; give a concrete case; test a distinction; restore terminology.
-- **Avoid:** childish tone, permanent loss of precision, attribution of the popular child-explanation slogan.
-- **Exit condition:** The user can state the mechanism or distinguish the test cases with correct terms.
-- **Confidence:** medium
-
-## Misconceptions to Avoid
-
-- “Explain everything to a child” is not an adequately sourced universal rule.
-- Plain language alone does not prove understanding.
-- First-principles reasoning does not override empirical evidence or domain standards.
-
-## Open Research Questions
-
-- Verify direct evidence for the modern four-step “Feynman technique.”
-- Separate Feynman's documented teaching practice from later productivity summaries.
-- Determine how consistently prediction checks were used outside physics and research integrity.

@@ -23,7 +23,7 @@ rules:
     exit_conditions: ["the mechanism is understandable and formal terms are correctly reconnected"]
     safety_notes: ["retain units, exceptions, and professional terminology where correctness depends on them"]
     confidence: medium
-    source_refs: ["references/thinkers/feynman.md#replace-a-label-with-a-mechanism"]
+    source_refs: ["references/thinkers/feynman.md"]
   - id: expose-understanding-gap
     priority: 70
     description: Locate and repair the earliest missing prerequisite.
@@ -35,7 +35,7 @@ rules:
     exit_conditions: ["the user can perform the previously unsupported step"]
     safety_notes: ["skip diagnostic questioning when urgent direct instructions are needed"]
     confidence: provisional
-    source_refs: ["references/thinkers/feynman.md#locate-the-first-unsupported-step"]
+    source_refs: ["references/thinkers/feynman.md"]
   - id: clarify-definition
     priority: 65
     description: Establish a working definition when ambiguity changes the answer.
@@ -47,7 +47,7 @@ rules:
     exit_conditions: ["a usable definition is explicit and shared"]
     safety_notes: ["use established domain definitions where standards control"]
     confidence: high
-    source_refs: ["references/thinkers/socrates.md#stabilize-the-definition-before-arguing"]
+    source_refs: ["references/thinkers/socrates.md"]
   - id: challenge-assumption
     priority: 70
     description: Surface one necessary premise and test its consequences.
@@ -59,7 +59,7 @@ rules:
     exit_conditions: ["the premise is accepted, revised, or removed"]
     safety_notes: ["do not use questioning to manipulate consent or disclosure"]
     confidence: high
-    source_refs: ["references/thinkers/socrates.md#test-an-assumption-by-consequence"]
+    source_refs: ["references/thinkers/socrates.md"]
   - id: test-with-counterexample
     priority: 65
     description: Test a universal rule with the smallest relevant contrary case.
@@ -71,7 +71,7 @@ rules:
     exit_conditions: ["the claim survives the case or is appropriately bounded"]
     safety_notes: ["do not use hypothetical testing to delay known safety action"]
     confidence: high
-    source_refs: ["references/thinkers/socrates.md#search-for-a-counterexample"]
+    source_refs: ["references/thinkers/socrates.md"]
   - id: decompose-complex-system
     priority: 75
     description: Divide a system by responsibilities and interfaces, then trace it end to end.
@@ -83,7 +83,7 @@ rules:
     exit_conditions: ["the target behavior can be traced through explicit interfaces"]
     safety_notes: ["include trust boundaries and failure propagation in security-critical systems"]
     confidence: high
-    source_refs: ["references/thinkers/von-neumann.md#decompose-by-function-and-interface"]
+    source_refs: ["references/thinkers/von-neumann.md"]
   - id: change-representation
     priority: 60
     description: Move from prose to the smallest representation that exposes relevant operations.
@@ -95,7 +95,7 @@ rules:
     exit_conditions: ["the representation answers the target question and omissions are stated"]
     safety_notes: ["do not imply numerical certainty from qualitative inputs"]
     confidence: medium
-    source_refs: ["references/thinkers/von-neumann.md#change-representation-to-expose-operations"]
+    source_refs: ["references/thinkers/von-neumann.md"]
   - id: identify-structure
     priority: 55
     description: Transfer a structural analogy only after testing preserved and broken properties.
@@ -107,7 +107,7 @@ rules:
     exit_conditions: ["the mapping and its breakpoint are explicit"]
     safety_notes: ["reject analogy-based conclusions contradicted by domain evidence"]
     confidence: provisional
-    source_refs: ["references/thinkers/von-neumann.md#ask-which-structure-is-invariant"]
+    source_refs: ["references/thinkers/von-neumann.md"]
   - id: analyze-dynamic-change
     priority: 60
     description: Analyze state, direction, feedback, delay, and reversal instead of a static label.
@@ -119,7 +119,7 @@ rules:
     exit_conditions: ["a dynamic model and monitorable reversal condition are stated"]
     safety_notes: ["apply established emergency action before second-order analysis"]
     confidence: provisional
-    source_refs: ["references/thinkers/laozi.md#model-change-rather-than-static-labels"]
+    source_refs: ["references/thinkers/laozi.md"]
   - id: minimize-unnecessary-intervention
     priority: 65
     description: Choose the smallest reversible action that meets explicit success and safety criteria.
@@ -131,7 +131,7 @@ rules:
     exit_conditions: ["a safe action, success measure, and escalation threshold exist"]
     safety_notes: ["urgent, dangerous, abusive, and security-critical situations override non-intervention"]
     confidence: medium
-    source_refs: ["references/thinkers/laozi.md#choose-minimum-effective-intervention"]
+    source_refs: ["references/thinkers/laozi.md"]
   - id: detect-lens-conflict
     priority: 100
     description: Resolve incompatible lens actions using safety, correctness, user goal, and task fit.

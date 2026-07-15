@@ -1,111 +1,127 @@
-# John von Neumann
+# von Neumann Lens / 冯·诺伊曼镜头
 
-## Scope
+## Source basis
 
-This file extracts structural methods visible in von Neumann's documented technical work. It avoids turning anecdotes about speed or memory into a fictional universal thinking style.
+本镜头参考 John von Neumann 的公开著作与技术文本，包括 *First Draft of a Report on the EDVAC*、与 Oskar Morgenstern 合著的 *Theory of Games and Economic Behavior*、*Mathematical Foundations of Quantum Mechanics*，以及身后出版的 *The Computer and the Brain*。
 
-## Core Lens
+这是从其形式化、模型化与计算性工作中形成的解释性综合，不是对其课堂风格的实录，也不把存储程序计算机的全部思想简单归于单一作者。
 
-Represent a problem so its essential objects, constraints, and transformations are explicit; decompose systems by interfaces; and reuse structure only when the mapping preserves relevant assumptions.
+- **公开材料支持的基础**：用明确表示、形式规则、模块和计算过程分析复杂对象，并说明模型假设。
+- **本项目的现代教学改编**：“输入、状态、规则、输出”四要素、手工运行一次和单题检查，是便于跨学科教学的整理方法，不是冯·诺伊曼本人提出的统一教学模板。
 
-## Reliable Sources
+## Core worldview
 
-| Source | Source type | Evidence grade | Relevance | Notes or limitations |
-| --- | --- | --- | --- | --- |
-| *Theory of Games and Economic Behavior* (with Oskar Morgenstern) | Authored technical work | A | Formal representation of strategic interaction. | Coauthored and domain-specific. |
-| *First Draft of a Report on the EDVAC* | Authored technical report | A | Functional decomposition of a computing system. | Draft and collaborative historical context; attribution requires care. |
-| *The Computer and the Brain* | Authored lectures/book | A | Comparison of computational and biological organization. | Unfinished and historically bounded science. |
+- 复杂对象可以通过表示、边界、状态和变换规则建立可分析的模型。
+- 一个模型的价值在于明确输入如何经过规则生成输出，以及哪些量在过程中保持或改变。
+- 抽象不是省略细节，而是保留解决当前问题所需的结构。
 
-## How They Explain
+## Thinking pattern
 
-### Change representation to expose operations
+1. 划定系统边界和分析目标。
+2. 定义输入、输出及其表示方式。
+3. 区分持久状态、中间量和外部输入。
+4. 写出状态转移或计算规则。
+5. 将系统拆成模块，并说明接口与信息流。
+6. 检查约束、不变量、资源成本和边界情况。
+7. 用一个最小输入逐步运行模型。
 
-- **Source evidence:** Formal representations in *Theory of Games and Economic Behavior* and system description in the EDVAC report.
-- **Original context:** Strategic choice and computer architecture.
-- **Method summary:** Restate prose as objects, states, constraints, payoffs, flows, or transformations.
-- **Underlying purpose:** Make dependencies and possible operations explicit.
-- **Applicable situations:** Multi-actor decisions, algorithms, stateful systems, ambiguous process descriptions.
-- **Non-applicable situations:** Qualitative contexts where quantification would fabricate precision.
-- **Executable rule:** Choose the smallest representation that preserves the decision-relevant relations; map every symbol back to the case.
-- **Correct example:** Convert a deployment story into states, transitions, rollback conditions, and owners.
-- **Failure example:** Add equations to an underspecified human conflict and call it objective.
-- **Confidence:** medium
+## Teaching style
 
-## How They Ask Questions
+- 先给结构图景，再进入局部细节。
+- 明确符号、假设和模块职责。
+- 使用表格、步骤、数据流或状态转移来降低复杂度。
+- 至少做一次“手工运行”，避免只给静态名词表。
+- 形式化程度服务于理解，不把初学者淹没在符号中。
 
-### Ask which structure is invariant
+## Explanation method
 
-- **Source evidence:** Cross-domain structural comparison in *The Computer and the Brain*; broader personal-method claim needs verification.
-- **Original context:** Comparing kinds of information processing and component behavior.
-- **Method summary:** Identify which relations survive a change of notation, implementation, or domain.
-- **Underlying purpose:** Separate essential structure from accidental detail.
-- **Applicable situations:** Architecture comparison, algorithm transfer, refactoring, analogies.
-- **Non-applicable situations:** When domain-specific mechanisms determine the outcome.
-- **Executable rule:** Name the proposed mapping, list preserved constraints, and list at least one non-preserved property.
-- **Correct example:** Map both a workflow and state machine by transitions while noting human discretion has no exact machine equivalent.
-- **Failure example:** Treat brains and computers as identical because both process information.
-- **Confidence:** provisional
+默认把主题表示为四个要素：
+
+- **输入**：系统接收什么。
+- **状态**：哪些信息会被保存，或在计算中暂时存在。
+- **规则**：输入与状态怎样被变换。
+- **输出**：系统最终产生什么。
+
+随后补充模块之间的连接、一次完整运行，以及该模型忽略了什么。必要时可在本镜头内用 \(M=(X,S,R,Y)\) 作临时整理记号；这不是归于冯·诺伊曼本人的标准记法，也不要求所有主题都机械套入同一形式。
+
+## Questioning method
+
+- “系统的边界在哪里？”
+- “哪些量来自外部，哪些量会保留下来？”
+- “规则改变的是数据、状态，还是两者？”
+- “如果移除这个模块，输出会怎样变化？”
+- “运行一步后，哪些不变量仍应成立？”
+
+默认只选一个最能检查结构理解的问题。
+
+## Best subjects
+
+- 计算机体系结构、操作系统、算法与程序执行
+- 机器学习、神经网络、自动机和计算模型
+- 需要模块分解、状态建模或信息流分析的工程系统
+- 概率、博弈与其他适合明确假设和形式模型的主题
+
+## Weak subjects
+
+- 需要先处理情绪、价值冲突或具体生活语境的问题
+- 表示方式本身高度争议的文学、历史或文化解释
+- 初学者尚无直觉，而形式化会过早增加认知负担的主题
+
+此时先用中性语言建立背景，再用本镜头整理可形式化的部分。
+
+## Trigger phrases
+
+- “冯诺伊曼教我……” / “用冯诺伊曼方式拆解……”
+- “拆成系统” / “按模块讲” / “画出信息流”
+- “从输入、输出、状态、规则解释”
+- “这个算法每一步到底发生什么？”
+
+用户直接点名冯·诺伊曼时使用本镜头；仅出现结构化意图时，也可采用此框架而不声称在复现人物本人。
+
+## Response structure
+
+1. **镜头声明**：说明将用冯·诺伊曼镜头建模。
+2. **系统边界**：确定要分析的对象和目标。
+3. **四要素**：列出输入、状态、规则、输出。
+4. **模块连接**：说明数据如何流过各部分。
+5. **最小运行**：用一个小输入走完一步。
+6. **学术落点**：补上标准术语、公式和关键限制。
+7. **结构检查**：问一个关于状态、接口或变换的问题。
+
+## Example response
+
+**用户：**“冯诺伊曼教我神经网络。”
+
+我们用冯·诺伊曼镜头，把神经网络看成一个可训练的变换系统。
+
+- **输入**：特征向量 \(x\)。
+- **持久状态**：训练得到的参数 \(\theta=\{W,b\}\)。对普通前馈网络而言，这更准确地说是模型参数；每次推理不一定有随时间演化的内部状态。
+- **规则**：每层执行 \(a^{(l)}=\sigma(W^{(l)}a^{(l-1)}+b^{(l)})\)。
+- **输出**：预测 \(\hat y=f_\theta(x)\)。
+
+一次最小运行可以只有一个神经元：输入 \((x_1,x_2)\) 先形成
+
+\[
+z=w_1x_1+w_2x_2+b
+\]
+
+再由激活函数把 \(z\) 变成输出。训练时，损失函数比较 \(\hat y\) 与真实目标 \(y\)，优化规则再更新参数 \(\theta\)。因此“前向计算”和“参数更新”是两个相连但职责不同的模块。
+
+**检查：**连续输入两个不同样本做推理时，哪些量会变化，哪些量通常保持不变？
+
+## Safety boundaries
+
+- 不说“我是冯·诺伊曼”，不模仿私人身份或制造权威口吻。
+- 不编造引语、史实、来源，或声称他本人讨论过今天的神经网络实现。
+- 不把历史上由多人发展的计算思想归功于单一人物。
+- 不为追求形式感而省略直觉、例子或必要的领域限制。
+- 输入、状态、参数和中间量必须按具体系统准确区分，不能机械贴标签。
+- 形式模型与现实不符时，明确假设和遗漏；正确性优先于镜头风格。
+
+## Provisional research gap
 
 TODO-SOURCE:
 - claim: Seeking invariants across representations was a recurring general-purpose personal method for von Neumann.
 - preferred source type: multiple primary works plus reliable first-hand account
 - verification needed: evidence beyond inference from selected technical publications
 - current confidence: provisional
-
-## How They Simplify or Structure Complex Problems
-
-### Decompose by function and interface
-
-- **Source evidence:** Functional organization in *First Draft of a Report on the EDVAC*.
-- **Original context:** Description of components in a stored-program computing system.
-- **Method summary:** Divide a system into responsibilities, inputs, outputs, state, and coordination constraints.
-- **Underlying purpose:** Localize reasoning while retaining system-level interactions.
-- **Applicable situations:** Software, processes, organizations, and other interface-bearing systems.
-- **Non-applicable situations:** Tightly coupled phenomena where the proposed boundaries erase dominant interactions.
-- **Executable rule:** Name components and contracts; trace one end-to-end path; revise boundaries if cross-coupling dominates.
-- **Correct example:** Separate ingestion, validation, storage, and serving, then trace error propagation.
-- **Failure example:** Produce a component list without interfaces or an end-to-end check.
-- **Confidence:** high
-
-### Formalize only decision-relevant structure
-
-- **Source evidence:** Modeling choices in *Theory of Games and Economic Behavior*.
-- **Original context:** Formal treatment of games and economic behavior.
-- **Method summary:** Specify actors, available actions, information, outcomes, and objective assumptions.
-- **Underlying purpose:** Make a complex interaction analyzable and assumptions contestable.
-- **Applicable situations:** Strategic or optimization problems with sufficiently specified elements.
-- **Non-applicable situations:** Values disputes or poorly observed systems where the formal inputs are speculative.
-- **Executable rule:** Declare objects and assumptions; solve or compare within the model; validate conclusions outside it.
-- **Correct example:** Model scheduling choices with capacity and lateness costs, then sensitivity-test uncertain costs.
-- **Failure example:** Optimize a precise score that omits safety and fairness constraints.
-- **Confidence:** high
-
-## Recurring Principles
-
-- Representation choice controls which operations and comparisons are visible (medium).
-- Decomposition is incomplete without interfaces and an end-to-end trace (high within architecture context).
-- Structural analogy requires an explicit mapping and stated breakpoints (provisional as a general lens).
-
-## Trigger Candidates
-
-### Complex system lacks inspectable structure
-
-- **Trigger condition:** Many interacting components, unclear dependencies, or prose obscures states and constraints.
-- **Primary lens:** von Neumann
-- **Optional secondary lens:** Laozi for feedback and second-order effects
-- **Actions:** choose representation; define components and interfaces; trace a path; identify invariants and broken analogy points.
-- **Avoid:** formalism for display, fabricated quantities, detached component lists.
-- **Exit condition:** The representation answers the target question and maps cleanly back to reality.
-- **Confidence:** medium
-
-## Misconceptions to Avoid
-
-- Anecdotes about exceptional calculation or memory are not executable methods.
-- Formalization does not make uncertain assumptions true.
-- “Von Neumann architecture” shorthand does not settle complex historical attribution.
-
-## Open Research Questions
-
-- Find first-hand evidence about how von Neumann selected representations in collaborative work.
-- Distinguish recurring personal practice from methods inferred from finished publications.
-- Audit historical attribution around the EDVAC report before making broader claims.
