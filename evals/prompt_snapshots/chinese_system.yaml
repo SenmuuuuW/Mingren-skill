@@ -1,0 +1,5 @@
+input: "把一个复杂的软件系统拆成模块"
+selected_lenses: [von-neumann]
+applied_rules: [decompose-complex-system]
+required_fragments: ["specify inputs, outputs, state, and interfaces", "trace one end-to-end path"]
+forbidden_fragments: ["I am John von Neumann"]

@@ -7,7 +7,7 @@
 English | [中文](README.zh-CN.md)
 
 ![License](https://img.shields.io/badge/license-MIT-2ea44f)
-![Markdown only](https://img.shields.io/badge/format-Markdown--only-111111)
+![Markdown and Python](https://img.shields.io/badge/format-Markdown%20%2B%20Python-111111)
 ![AI Skill](https://img.shields.io/badge/type-AI%20Skill-2563eb)
 ![Distilled lenses](https://img.shields.io/badge/method-distilled%20thinker%20lenses-d97706)
 ![MVP](https://img.shields.io/badge/MVP-4%20thinkers-7c3aed)
@@ -151,7 +151,23 @@ This repository contains the focused `v0.1.0` MVP. Quality and behavioral bounda
 
 ## 🐍 Python rule engine
 
-The `src/mingren_skill/` package is a deterministic implementation layer for the product rules. It validates trigger metadata, applies transparent keyword and pattern routing, gives safety and factual correctness precedence, resolves compatible lenses, and returns a structured plan rather than a roleplayed answer. It does not call an external LLM and is not a complete professional safety classifier.
+The `src/mingren_skill/` package is a deterministic implementation layer for the product rules. It routes a request, applies safety precedence, builds a provider-independent prompt package, and can inspect a proposed response for structural and safety failures. It does not call an external language model, guarantee factual correctness, or act as a complete professional safety classifier.
+
+```text
+User request
+    ↓
+Language detection + rule routing + safety evaluation
+    ↓
+EngineResult (structured teaching plan)
+    ↓
+PromptBuilder → PromptPackage (system/developer/user prompts)
+    ↓
+External provider chosen by the integrator (not included here)
+    ↓
+Candidate learner-facing answer
+    ↓
+ResponseValidator → issues and required revisions
+```
 
 Install and verify it with Python 3.11 or newer:
 
@@ -161,12 +177,17 @@ python scripts/validate.py
 pytest
 ```
 
-Both CLI forms print a JSON `EngineResult`:
+The CLI has three explicit commands:
 
 ```sh
-python -m mingren_skill "Explain recursion simply"
-mingren-skill "Break this system into modules"
+mingren-skill plan "用简单的话解释递归"
+mingren-skill prompt "这里的理解到底是什么意思？"
+mingren-skill validate-response "我胸口剧痛而且无法呼吸" --response "顺其自然，先观察一下。"
 ```
+
+`plan` prints `EngineResult`. `prompt` prints the complete `PromptPackage`, including separated model-ready prompts and validation requirements. `validate-response` evaluates a supplied answer and prints deterministic issues and revision actions. For backward compatibility, `mingren-skill "input"` and `python -m mingren_skill "input"` still behave as `plan`.
+
+`PromptPackage` is provider-independent. A future adapter can map `system_prompt`, `developer_prompt`, and `user_prompt` to a provider's message format, generate a candidate answer, and pass it with the original `PromptContext` to `ResponseValidator`. No provider SDK, network call, streaming layer, or API credential handling is included.
 
 Technical artifacts are intentionally separate from the authoritative teaching specification:
 
@@ -175,6 +196,9 @@ Technical artifacts are intentionally separate from the authoritative teaching s
 - `references/safety_boundaries.md` — implementation-specific hard boundaries
 - `evals/cases.yaml` and `evals/failure_taxonomy.md` — machine-oriented cases and detailed failure tests
 - `tests/` — loader, router, engine, safety, and validator behavior tests
+- `src/mingren_skill/prompt_builder.py` — provider-independent prompt assembly
+- `src/mingren_skill/response_validator.py` — deterministic structural and safety response checks
+- `evals/prompt_snapshots/` — representative prompt regression expectations
 - `AGENTS.md` — coding-agent contribution requirements
 - `docs/requirements_traceability.md` — product requirements mapped to executable behavior, tests, and remaining gaps
 - `docs/behavior_alignment_review.md` — Git provenance, intended behavior, realistic prompt results, and confirmed gaps

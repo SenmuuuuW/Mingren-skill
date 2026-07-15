@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import re
 import sys
 from pathlib import Path
@@ -22,10 +23,13 @@ REQUIRED_FILES = (
     "src/mingren_skill/__init__.py", "src/mingren_skill/models.py",
     "src/mingren_skill/loaders.py", "src/mingren_skill/router.py",
     "src/mingren_skill/engine.py", "src/mingren_skill/safety.py",
+    "src/mingren_skill/language.py", "src/mingren_skill/prompt_builder.py",
+    "src/mingren_skill/response_validator.py",
     "src/mingren_skill/__main__.py", "scripts/validate.py",
     "scripts/__init__.py",
     "tests/test_loaders.py", "tests/test_router.py", "tests/test_engine.py",
-    "tests/test_safety.py", "tests/test_validation.py",
+    "tests/test_safety.py", "tests/test_validation.py", "tests/test_language.py",
+    "tests/test_prompt_builder.py", "tests/test_response_validator.py", "tests/test_cli.py",
 )
 THINKER_HEADINGS = (
     "Source basis", "Core worldview", "Thinking pattern", "Teaching style",
@@ -43,6 +47,7 @@ CASE_FIELDS = {
 CONFIDENCE = {"high", "medium", "low", "provisional"}
 FAILURE_IDS = {f"F{number:02d}" for number in range(1, 21)}
 TODO_FIELDS = ("claim", "preferred source type", "verification needed", "current confidence")
+SNAPSHOT_FIELDS = {"input", "selected_lenses", "applied_rules", "required_fragments"}
 
 
 def _load_yaml(path: Path, errors: list[str]) -> object | None:
@@ -58,6 +63,26 @@ def _load_yaml(path: Path, errors: list[str]) -> object | None:
 def _anchor(heading: str) -> str:
     cleaned = "".join(character for character in heading.lower() if character.isalnum() or character in " -")
     return "-".join(cleaned.split())
+
+
+def _extract_string_set(path: Path, variable_name: str) -> set[str] | None:
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError):
+        return None
+    for node in tree.body:
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and target.id == variable_name for target in node.targets):
+            continue
+        if not isinstance(node.value, ast.Call) or not node.value.args:
+            return None
+        try:
+            value = ast.literal_eval(node.value.args[0])
+        except (ValueError, TypeError):
+            return None
+        return set(value) if isinstance(value, (set, list, tuple)) else None
+    return None
 
 
 def validate_repository(root: Path) -> list[str]:
@@ -149,6 +174,48 @@ def validate_repository(root: Path) -> list[str]:
                     errors.append(f"duplicate evaluation case ID: {case_id}")
                 if isinstance(case_id, str):
                     case_ids.add(case_id)
+
+    snapshots = root / "evals" / "prompt_snapshots"
+    if not snapshots.is_dir():
+        errors.append("missing prompt snapshot directory: evals/prompt_snapshots")
+    else:
+        snapshot_paths = sorted(snapshots.glob("*.yaml"))
+        if len(snapshot_paths) < 7:
+            errors.append("prompt snapshot directory must contain at least 7 YAML snapshots")
+        for path in snapshot_paths:
+            data = _load_yaml(path, errors)
+            if not isinstance(data, dict):
+                errors.append(f"prompt snapshot is not a mapping: {path.relative_to(root)}")
+                continue
+            missing = SNAPSHOT_FIELDS - data.keys()
+            if missing:
+                errors.append(f"prompt snapshot {path.name} missing fields: {', '.join(sorted(missing))}")
+            for field in SNAPSHOT_FIELDS:
+                value = data.get(field)
+                if value is None or value == "" or value == []:
+                    if field != "selected_lenses":
+                        errors.append(f"prompt snapshot {path.name} has empty field: {field}")
+
+    models_path = root / "src" / "mingren_skill" / "models.py"
+    output_modes = _extract_string_set(models_path, "ALLOWED_OUTPUT_MODES") if models_path.is_file() else None
+    if output_modes != {"final_answer", "prompt_preview", "debug"}:
+        errors.append("ALLOWED_OUTPUT_MODES must contain final_answer, prompt_preview, and debug")
+    severities = _extract_string_set(models_path, "ALLOWED_ISSUE_SEVERITIES") if models_path.is_file() else None
+    if severities != {"error", "warning", "info"}:
+        errors.append("ALLOWED_ISSUE_SEVERITIES must contain error, warning, and info")
+
+    readme = root / "README.md"
+    if readme.is_file():
+        readme_text = readme.read_text(encoding="utf-8")
+        for command in ("mingren-skill plan", "mingren-skill prompt", "mingren-skill validate-response"):
+            if command not in readme_text:
+                errors.append(f"README.md does not document CLI command: {command}")
+    traceability = root / "docs" / "requirements_traceability.md"
+    if traceability.is_file():
+        trace_text = traceability.read_text(encoding="utf-8").lower()
+        for term in ("promptpackage", "response validation"):
+            if term not in trace_text:
+                errors.append(f"requirements traceability is missing prompt-layer term: {term}")
     return errors
 
 

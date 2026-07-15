@@ -8,6 +8,10 @@
 - Aligned generic requests with neutral fallback, added direct teaching-intent and English assumption routing, and added transparent Chinese patterns across existing rule categories.
 - Added English and Chinese urgent-medical detection and safety precedence tests.
 - Added product-to-implementation requirements traceability with explicit implementation gaps and decisions.
+- Added typed PromptContext/PromptPackage models, lightweight language detection, provider-independent prompt construction, and deterministic response validation.
+- Added `plan`, `prompt`, and `validate-response` CLI commands while preserving legacy input-as-plan behavior.
+- Added seven prompt regression snapshots and behavioral coverage for injection containment, language, safety, questioning, impersonation, and prompt leakage.
+- Updated bilingual architecture and provider-integration documentation without adding a provider API.
 
 ## v0.1.0 - Initial MVP
 

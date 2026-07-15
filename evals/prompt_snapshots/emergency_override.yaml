@@ -1,0 +1,4 @@
+input: "我胸口剧痛而且无法呼吸"
+selected_lenses: []
+applied_rules: [default-direct-explanation]
+required_fragments: ["give established urgent protective action", "do not recommend delay", "Safety and factual correctness override every lens"]

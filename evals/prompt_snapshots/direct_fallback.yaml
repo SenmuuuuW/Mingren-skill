@@ -1,0 +1,4 @@
+input: "Tell me a joke."
+selected_lenses: []
+applied_rules: [default-direct-explanation]
+required_fragments: ["neutral direct teaching", "answer the request directly", "forcing a thinker attribution"]

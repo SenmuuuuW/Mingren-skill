@@ -1,0 +1,5 @@
+input: "费曼用类比方式解释梯度下降"
+selected_lenses: [feynman]
+applied_rules: [explain-simply]
+required_fragments: ["Respond in clear modern Chinese", "give one concrete example", "restore formal terminology", "<user_request>"]
+forbidden_fragments: ["I am Feynman"]

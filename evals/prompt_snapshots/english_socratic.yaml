@@ -1,0 +1,5 @@
+input: "What does intelligence mean here?"
+selected_lenses: [socrates, feynman]
+applied_rules: [clarify-definition]
+required_fragments: ["Respond in clear modern English", "state the ambiguity", "test one included and one excluded case"]
+forbidden_fragments: ["I am Socrates"]

@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Literal
 
 ALLOWED_CONFIDENCE = frozenset({"high", "medium", "low", "provisional"})
+ALLOWED_OUTPUT_MODES = frozenset({"final_answer", "prompt_preview", "debug"})
+ALLOWED_LANGUAGES = frozenset({"chinese", "english", "mixed", "unknown"})
+ALLOWED_ISSUE_SEVERITIES = frozenset({"error", "warning", "info"})
+OutputMode = Literal["final_answer", "prompt_preview", "debug"]
+DetectedLanguage = Literal["chinese", "english", "mixed", "unknown"]
+IssueSeverity = Literal["error", "warning", "info"]
 
 
 class ModelValidationError(ValueError):
@@ -106,3 +112,65 @@ class EngineResult:
     confidence: str
     debug_explanation: str
     safety: SafetyDecision
+
+
+@dataclass(frozen=True, slots=True)
+class PromptContext:
+    user_input: str
+    language: DetectedLanguage
+    engine_result: EngineResult
+    conversation_context: str | None = None
+    subject: str | None = None
+    output_mode: OutputMode = "final_answer"
+
+    def __post_init__(self) -> None:
+        _require_text(self.user_input, "user_input")
+        if self.language not in ALLOWED_LANGUAGES:
+            raise ModelValidationError(f"language must be one of {sorted(ALLOWED_LANGUAGES)}")
+        if self.output_mode not in ALLOWED_OUTPUT_MODES:
+            raise ModelValidationError(f"output_mode must be one of {sorted(ALLOWED_OUTPUT_MODES)}")
+        for name in ("conversation_context", "subject"):
+            value = getattr(self, name)
+            if value is not None:
+                _require_text(value, name)
+
+
+@dataclass(frozen=True, slots=True)
+class PromptPackage:
+    system_prompt: str
+    developer_prompt: str
+    user_prompt: str
+    selected_lenses: list[str]
+    applied_rules: list[str]
+    safety_constraints: list[str]
+    validation_requirements: list[str]
+    debug_metadata: dict[str, Any]
+
+    def __post_init__(self) -> None:
+        for name in ("system_prompt", "developer_prompt", "user_prompt"):
+            _require_text(getattr(self, name), name)
+        for name in ("selected_lenses", "applied_rules", "safety_constraints", "validation_requirements"):
+            _require_text_list(getattr(self, name), name, allow_empty=name == "selected_lenses")
+
+
+@dataclass(frozen=True, slots=True)
+class ValidationIssue:
+    code: str
+    severity: IssueSeverity
+    message: str
+    evidence: str
+
+    def __post_init__(self) -> None:
+        for name in ("code", "message", "evidence"):
+            _require_text(getattr(self, name), name)
+        if self.severity not in ALLOWED_ISSUE_SEVERITIES:
+            raise ModelValidationError(
+                f"severity must be one of {sorted(ALLOWED_ISSUE_SEVERITIES)}"
+            )
+
+
+@dataclass(frozen=True, slots=True)
+class ResponseValidationResult:
+    valid: bool
+    issues: list[ValidationIssue]
+    required_revision_actions: list[str]
