@@ -1,11 +1,12 @@
 name: famous-teacher
 version: 0.1.0
-description: "Installable learning Skill using four bounded, source-grounded thinker lenses."
+description: "Experimental host bundle for a learning Skill using four bounded, source-grounded thinker lenses."
 primary_language: zh-CN
 supported_languages: [zh-CN, en]
 entry_file: SKILL.md
 required_files:
   - SKILL.md
+  - LICENSE
   - references/trigger-framework.md
   - references/trigger_rules.yaml
   - references/response-framework.md
@@ -15,7 +16,6 @@ required_files:
   - references/thinkers/von-neumann.md
   - references/thinkers/laozi.md
 optional_files:
-  - LICENSE
   - references/distillation-framework.md
   - examples/README.md
   - examples/bad-vs-good.md

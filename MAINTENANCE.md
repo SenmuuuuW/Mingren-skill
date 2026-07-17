@@ -7,8 +7,34 @@ These rules keep Famous Teacher Skill / 名人教你 Skill focused, accurate, an
 - Support exactly four thinker lenses: Feynman, von Neumann, Socrates, and Laozi.
 - Do not add a new thinker without a clear learning need, a completed distillation file, representative examples, and rubric-based evaluation.
 - Do not add living or private people in early versions.
-- Keep the product Markdown-first. Optional offline build, routing, validation, and evaluation scripts are allowed for maintainers, but they must never become a host runtime dependency.
-- Do not add model providers, API credentials, HTTP generation, backends, databases, or RAG. The host that loads the Skill generates the answer.
+- Keep the thinker-lens teaching contract Markdown-first. Python is an auxiliary implementation and validation layer; it must not redefine behavior established by `SKILL.md` and the product frameworks.
+
+## Owner-approved offline Python scope
+
+This is a narrow, owner-approved refinement of the original docs-first policy, not open-ended permission to add code.
+
+Small offline Python tools may be added only when they directly support bundle construction, manifest validation, evaluation-case validation, link or consistency checking, local release verification, or the existing deterministic routing and inspection prototype.
+
+These tools must:
+
+- remain optional for reading and applying the Markdown specifications in a compatible host;
+- avoid model-provider APIs, API credentials, and network dependencies during normal validation;
+- avoid backend services, databases, vector stores, and RAG;
+- have a clear, documented purpose;
+- include tests when they affect packaging, validation, or deterministic routing;
+- preserve the thinker-lens behavior contract rather than redefining it; and
+- remain small enough to review as auxiliary local tooling.
+
+The following remain disallowed without explicit owner approval:
+
+- web applications or course platforms;
+- production APIs or persistent backend services;
+- databases, vector stores, or RAG;
+- user accounts or hidden memory;
+- provider-specific runtime integrations;
+- large dependency frameworks;
+- automatic scraping; and
+- lens marketplaces.
 
 ## Content rules
 

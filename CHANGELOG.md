@@ -1,10 +1,19 @@
 # Changelog
 
-## Unreleased - Host-executed Skill packaging
+## Unreleased - Audit baseline consistency repair
+
+- Aligned English and Chinese generic-simplicity cases on neutral teaching; Feynman now requires explicit lens intent or a distinctive method signal.
+- Made quotation, attribution, and source-only requests non-triggers while preserving strict anti-fabrication and uncertainty handling.
+- Clarified the owner-approved, narrow scope for auxiliary offline Python tooling and retained the explicit exclusions for APIs, backends, databases, RAG, and lens expansion.
+- Reframed the bundle as experimental: building and validation require Python, no named host is verified, and manual behavioral host evaluations have not yet been run.
+- Hardened bundle source containment and corrected optional-file, entry-file, duplicate-path, and regular-file validation semantics.
+- Added deterministic host-case consistency checks and cleaned up product-to-implementation traceability statuses.
+
+## Previous unreleased - Host-executed Skill packaging
 
 - Defined the two-layer runtime contract: a Markdown/YAML Skill executed by the host and an optional offline Python development toolkit.
 - Made `SKILL.md` self-sufficient for lens selection, safety, completion, unsupported thinkers, failure prevention, and reference loading.
-- Added the runtime manifest, generic host installation guide, deterministic allowlisted bundle builder, checksums, and reproducible ZIP packaging.
+- Added the runtime manifest, generic host installation guide, deterministic allowlisted bundle builder, checksums, and deterministic ZIP packaging.
 - Added host-model evaluation fixtures and a repeatable manual evaluation procedure without making network calls.
 - Extended repository validation for runtime links, manifest integrity, lens and version consistency, host cases, absent API configuration, and reproducible builds.
 - Repositioned the Python prompt package as an offline inspection aid rather than an external generation handoff.

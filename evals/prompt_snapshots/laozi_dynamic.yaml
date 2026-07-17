@@ -1,5 +1,5 @@
 input: "Explain why a feedback loop can become unstable."
-selected_lenses: [laozi, von-neumann]
+selected_lenses: [laozi]
 applied_rules: [analyze-dynamic-change]
 required_fragments: ["trace one feedback loop", "vague claims that everything changes", "modern"]
 forbidden_fragments: ["I am Laozi"]

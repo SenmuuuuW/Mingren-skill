@@ -8,7 +8,7 @@
 <p>English &nbsp;|&nbsp; <a href="README.zh-CN.md">中文</a></p>
 
 <p>
-  <a href="CHANGELOG.md"><img alt="Stage: v0.1 foundation" src="https://img.shields.io/badge/stage-v0.1%20foundation-0f766e?style=flat-square"></a>
+  <a href="CHANGELOG.md"><img alt="Stage: v0.1 experimental" src="https://img.shields.io/badge/stage-v0.1%20experimental-0f766e?style=flat-square"></a>
   <a href="SKILL.md"><img alt="Specification first" src="https://img.shields.io/badge/approach-specification%20first-2563eb?style=flat-square"></a>
   <a href="pyproject.toml"><img alt="Python 3.11+ prototype" src="https://img.shields.io/badge/Python-3.11%2B%20prototype-3776AB?style=flat-square&logo=python&logoColor=white"></a>
   <a href="references/thinkers/"><img alt="Four thinker lenses" src="https://img.shields.io/badge/thinker%20lenses-4-7c3aed?style=flat-square"></a>
@@ -18,11 +18,13 @@
 </div>
 
 > [!IMPORTANT]
-> **Current stage: V0.1 foundation.** Mingren is an installable, host-executed learning Skill. Teaching behavior, boundaries, examples, and evaluation criteria are specification-first and defined in Markdown/YAML. The repository also contains optional offline Python tools for routing, prompt previews, and response checks.
+> **Current stage: V0.1 foundation, docs-first and experimental.** Teaching behavior, boundaries, examples, and evaluation criteria are specification-first and defined in Markdown/YAML. The repository also contains narrow offline Python tools for routing, validation, evaluation support, and experimental bundle construction.
 
 ## What this project is
 
-Mingren Skill (Famous Teacher Skill) is an installable, cross-subject learning Skill. It applies four bounded thinker lenses to help a capable host explain real academic ideas. The host model that loads the Skill generates the answer; Mingren makes no external model API call. No API key, backend, network access, Python installation, or command-line execution is required for ordinary use. The included Python tools are optional offline aids for maintainers.
+Mingren Skill (Famous Teacher Skill) is a cross-subject learning Skill designed for execution by a compatible host. It applies four bounded thinker lenses to help the host explain real academic ideas. The host model generates the answer; Mingren makes no external model API call.
+
+The generated bundle is designed for compatible host environments. Building and validating the bundle currently requires Python and the documented dependencies. Compatibility with a specific named host has not yet been formally verified, and the manual host evaluation cases have not yet been run. Once generated, the bundle may be consumed by a compatible host without the project's Python build tooling.
 
 Famous Teacher Skill is a cross-subject learning project that turns documented reasoning and teaching methods into explicit, reviewable thinker lenses. A lens changes how an explanation is organized while the real academic concept remains authoritative.
 
@@ -77,7 +79,7 @@ Give one small example
 Ask one focused check question
 ```
 
-Direct lens requests take priority. Distinctive method requests may suggest a lens. Subject alone never silently selects one, and generic requests such as “explain simply” remain neutral unless lens intent is otherwise clear.
+Direct lens requests take priority. Distinctive method requests may suggest a lens. Subject alone never silently selects one, and generic requests such as “explain simply” remain neutral unless lens intent is otherwise clear. Quotation, attribution, and source requests are also neutral unless the user separately asks for teaching through a lens.
 
 ## Project layers
 
@@ -86,19 +88,21 @@ Direct lens requests take priority. Distinctive method requests may suggest a le
 | Product specification | Authoritative Skill behavior and quality boundaries | [`SKILL.md`](SKILL.md), [`references/`](references/) |
 | Thinker research | Source-bounded definitions for the four lenses | [`references/thinkers/`](references/thinkers/) |
 | Examples and evaluation | Calibrated responses, cases, and failure checks | [`examples/`](examples/), [`evals/`](evals/) |
-| Optional development toolkit | Routing, offline prompt previews, deterministic checks, and bundle validation | [`src/mingren_skill/`](src/mingren_skill/), [`scripts/`](scripts/), [`tests/`](tests/) |
+| Python implementation and maintainer tooling | Routing, offline prompt previews, deterministic checks, evaluation support, and bundle construction | [`src/mingren_skill/`](src/mingren_skill/), [`scripts/`](scripts/), [`tests/`](tests/) |
 
 The product Markdown remains authoritative. When implementation and specification diverge, update the Python rules, evaluation cases, and tests to match the specification.
 
-## 📦 Install and use
+## 📦 Build the experimental bundle
 
-Build the portable runtime bundle with:
+Building and validating the bundle requires Python 3.11 or newer, PyYAML, and the development dependencies:
 
-```sh
+```bash
+python -m pip install -e ".[dev]"
+python scripts/validate.py
 python scripts/build_skill_bundle.py
 ```
 
-This creates `dist/skill/` and deterministic `dist/mingren-skill.zip`. In a Skill-capable host, provide that bundle through the host's supported file or Skill interface and use `SKILL.md` as the entry instruction. See [installation concepts](docs/installation.md) and the [runtime contract](docs/runtime_contract.md). No API key or backend is needed.
+This creates `dist/skill/` and deterministic `dist/mingren-skill.zip`. The bundle format is experimental and targets hosts that can load its Markdown/YAML files, preserve relative references, and use `SKILL.md` as the entry instruction. No named host compatibility is currently verified. See the [experimental installation procedure](docs/installation.md) and [runtime contract](docs/runtime_contract.md).
 
 Example prompts:
 
@@ -110,9 +114,11 @@ Use Socratic questions to clarify what “understanding” means here.
 
 The runtime bundle contains the entry Skill, manifest, trigger, response and safety rules, four thinker specifications, selected examples, quality guidance, and checksums. Unsupported thinker requests are handled neutrally or with a supported-lens clarification; they do not create new lenses.
 
-## 🐍 Optional development toolkit
+## 🐍 Python implementation and maintainer tooling
 
-The `src/mingren_skill/` package is an optional reference implementation: a deterministic router, offline prompt preview, response validator, evaluation helper, and development CLI. A host normally reads the Skill instructions directly and does not need a `PromptPackage` handoff. The toolkit does not generate learner-facing answers, call a model, guarantee factual correctness, or replace professional safety judgment.
+The `src/mingren_skill/` package is an auxiliary reference implementation: a deterministic router, offline prompt preview, response validator, evaluation helper, and development CLI. Reading and applying the Markdown specification does not require this package, while building and validating the generated bundle currently does require the documented Python environment. A compatible host normally reads the Skill instructions directly and does not need a `PromptPackage` handoff.
+
+New Python work remains governed by the narrow, owner-approved offline-tooling scope in [`MAINTENANCE.md`](MAINTENANCE.md); it is not permission to add provider integrations or application infrastructure.
 
 ```text
 User request
@@ -151,7 +157,7 @@ mingren-skill validate-response "My chest hurts and I cannot breathe" --response
 - [`SKILL.md`](SKILL.md): central behavior specification and response workflow
 - [`skill-manifest.yaml`](skill-manifest.yaml): runtime allowlist, capabilities, version, and offline requirements
 - [`docs/runtime_contract.md`](docs/runtime_contract.md): canonical host-execution contract
-- [`docs/installation.md`](docs/installation.md): generic host installation concepts
+- [`docs/installation.md`](docs/installation.md): experimental bundle build and loading procedure
 - [`references/distillation-framework.md`](references/distillation-framework.md): standard for distilling a thinker lens
 - [`references/trigger-framework.md`](references/trigger-framework.md): trigger precedence, ambiguity, and non-trigger rules
 - [`references/response-framework.md`](references/response-framework.md): default teaching-response structure
@@ -179,7 +185,7 @@ mingren-skill validate-response "My chest hurts and I cannot breathe" --response
 
 See the full [safety and quality boundaries](references/safety-boundaries.md).
 
-Current limitations: only four lenses are supported; routing is deterministic and keyword-based; the validator cannot prove factual correctness; host behavior varies and must be evaluated manually; provisional `TODO-SOURCE` items remain provisional.
+Current limitations: only four lenses are supported; routing is deterministic and keyword-based; the validator cannot prove factual correctness; the bundle format is experimental; no named host compatibility is verified; manual behavioral host evaluations have not yet been run; provisional `TODO-SOURCE` items remain provisional.
 
 ## License
 

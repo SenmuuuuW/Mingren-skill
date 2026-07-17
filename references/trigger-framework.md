@@ -4,11 +4,11 @@ Detect a thinker lens from the user's words and intent without forcing a persona
 
 ## Signals
 
-### 1. Direct name triggers
+### 1. Direct lens triggers
 
-Direct names are the strongest signal.
+An explicit lens request, or a supported thinker name paired with teaching intent, is the strongest signal. A name alone is not enough when the user is asking for biography, history, a quotation, attribution, or a source.
 
-| User wording | Lens |
+| Supported name or lens wording | Lens |
 | --- | --- |
 | Feynman, Richard Feynman, 费曼, 费恩曼 | Feynman |
 | von Neumann, John von Neumann, 冯诺伊曼, 冯·诺依曼 | von Neumann |
@@ -28,7 +28,9 @@ Style requests can select or suggest a lens:
 | “只追问我”“不要先给答案”“用反例检验定义” | Socrates |
 | “从关系和变化理解”“看反向、平衡或对立面” | Laozi |
 
-Treat a generic phrase such as “讲简单点” or “用白话讲” as a weak Feynman signal, not an automatic thinker request. A neutral plain-language answer may satisfy it better. Select Feynman from method wording only when the request also includes a distinctive move such as analogy-first explanation, explain-back, or an explicit understanding check.
+Generic simplicity and repair phrases are not lens signals by themselves. Requests such as “讲简单点,” “简单解释一下,” “explain simply,” “make this easier to understand,” “我没听懂，再说一次,” and “不要讲那么复杂” stay neutral. Use simpler language, less jargon, and one concrete example without naming Feynman.
+
+Select Feynman from method wording only when the request includes a distinctive learning operation beyond generic simplification, such as plain language plus an analogy, intuition before formula, explaining the concept back in the learner's own words, or an explicit check of whether the learner truly understands.
 
 ### 3. Subject-based suggestions
 
@@ -59,7 +61,7 @@ Map the requested learning action before choosing the lens:
 Apply signals in this order:
 
 1. Enforce safety and factual correctness.
-2. Follow a directly named supported thinker.
+2. Follow a directly named supported thinker paired with teaching or explicit lens intent.
 3. Follow an explicit distinctive method request.
 4. Use the user's learning intent to resolve remaining ambiguity.
 5. Use subject fit only as a suggestion or tie-breaker.
@@ -91,10 +93,14 @@ Do not ask the learner to choose a thinker when they simply need a quick factual
 | “把这个调度器拆成输入、状态、规则和输出。” | Select von Neumann from a distinctive method signal. |
 | “不要告诉我答案，用反例追问我。” | Select Socrates from explicit guided-discovery intent. |
 | “从变化和相互关系解释供需均衡。” | Select Laozi as an interpretive lens, then ground in economics. |
-| “简单解释一下导数。” | Answer neutrally in plain language; Feynman is only a weak signal. |
+| “简单解释一下导数。” | Answer neutrally in plain language; generic simplicity alone is not a lens signal. |
+| “先用类比讲，再检查我是不是真的懂。” | Select Feynman from the combined analogy and understanding-check method. |
 | “用费曼和老子分别解释导数。” | Compare exactly those two lenses. |
 | “用一位尚未支持的思想家教我算法。” | State the four-lens V0.1 limit; offer neutral teaching or a supported lens. |
+| “给我一句费曼的原话。” | Stay neutral; verify the quotation or distinguish paraphrase from uncertain attribution. |
 
 ## Non-trigger cases
 
-Do not trigger because a thinker is mentioned only as historical subject matter, quoted in a source, or included in a list. “What did Feynman work on?” is a factual biography question unless the user also asks to be taught through the Feynman lens.
+Do not trigger because a thinker is mentioned only as historical subject matter, quoted in a source, included in a list, or named in an attribution check. “What did Feynman work on?”, “费曼有没有说过这句话?”, and “What source proves Laozi would teach it this way?” remain neutral unless the user also asks to be taught through that lens.
+
+For quotation and source requests, apply attribution safeguards: do not fabricate wording or citations; distinguish verified quotations, paraphrases, and uncertain attributions; and explain when a lens is an educational synthesis rather than a literal historical teaching method.

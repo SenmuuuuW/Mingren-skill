@@ -1,30 +1,45 @@
 # Installing Mingren Skill
 
-Mingren is installed into a capable host by providing the runtime bundle and making `SKILL.md` the entry instruction. No API key, network service, Python runtime, or backend is needed for ordinary use.
+## Current status
 
-Build the portable bundle as a maintainer with:
+The bundle format is experimental. A generated bundle is designed for host environments that can load its Markdown/YAML files, preserve relative references, and use `SKILL.md` as the entry instruction. Compatibility with a specific named host has not been formally verified, and the [manual behavioral cases](../evals/manual_evaluation.md) have not yet been run.
 
-```sh
+Building and validating the bundle currently requires Python 3.11 or newer and the documented dependencies. A compatible host may consume an already generated bundle without the project's Python build tooling; this is a design target, not a verified compatibility claim.
+
+## Build and validate
+
+Install the local development dependencies, validate the repository, and build the bundle:
+
+```bash
+python -m pip install -e ".[dev]"
+python scripts/validate.py
 python scripts/build_skill_bundle.py
 ```
 
-This creates `dist/skill/`, `dist/mingren-skill.zip`, and a checksum manifest. Generated distribution artifacts are reproducible and intentionally not committed.
+This creates `dist/skill/`, `dist/mingren-skill.zip`, and a checksum manifest. Repository checks compare repeated local builds for deterministic output; cross-platform reproducibility has not been established. Generated distribution artifacts are intentionally not committed.
 
-## ChatGPT-style host
+## Minimum host capabilities
 
-Use the host's supported file or Skill installation mechanism to provide the ZIP or the contents of `dist/skill/`. Set or load `SKILL.md` as the entry instruction and keep its required references available. Exact interface labels vary by host, so consult the host's current documentation. No model API credential is needed.
+A candidate host must be able to:
 
-## Claude-style host
+- load Markdown and YAML files;
+- preserve and follow relative file references;
+- use `SKILL.md` as the entry instruction;
+- generate a learner-facing natural-language response; and
+- preserve Skill safety instructions over user-provided text.
 
-Add the runtime bundle through the host's supported project, knowledge, or Skill file mechanism. Ensure `SKILL.md` and relative reference files remain available together. Do not configure a separate generation API; the host model already executes the Skill.
+## Experimental loading procedure
 
-## Codex-style host
+1. Build and validate the bundle using the commands above.
+2. Provide `dist/mingren-skill.zip` or the contents of `dist/skill/` through the candidate host's supported file or Skill mechanism.
+3. Set or load `SKILL.md` as the entry instruction and keep the bundled relative file layout intact.
+4. Run every case in [`evals/manual_evaluation.md`](../evals/manual_evaluation.md) and record the host name, model version, date, and result.
 
-Clone or provide the repository, then instruct the agent to read `SKILL.md` and its runtime references. The Python toolkit can validate or inspect behavior during development, but it is optional for normal host execution. No external generation API is needed.
+Interface labels and instruction-loading behavior vary by host. Do not describe a host as compatible until that manual evaluation has actually been completed for the named host and version.
 
-## Skill installation versus toolkit installation
+## Bundle use versus toolkit use
 
-- **Skill installation:** load `dist/skill/` or `dist/mingren-skill.zip` into the host. This is the end-user path and has no Python dependency.
-- **Toolkit installation:** maintainers may run `python -m pip install -e ".[dev]"` to use routing, prompt inspection, response linting, tests, and bundle validation offline.
+- **Generated bundle:** designed to be read by a compatible host without the Python build tooling. This path has not yet been verified against a named host.
+- **Python toolkit:** currently required to build and validate the bundle and available for offline routing, prompt inspection, response linting, tests, and local release checks.
 
-Hosts differ in supported file layouts and instruction-loading behavior. Compatibility should be claimed only after a manual evaluation using `evals/manual_evaluation.md`.
+Neither layer calls a model-provider API or requires a Mingren backend, database, or RAG service.

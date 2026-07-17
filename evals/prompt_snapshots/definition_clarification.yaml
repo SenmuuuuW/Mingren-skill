@@ -1,0 +1,5 @@
+input: "I still don't understand this definition; what exactly does it mean?"
+selected_lenses: [socrates]
+applied_rules: [clarify-definition]
+required_fragments: ["state the ambiguity", "test one included and one excluded case"]
+forbidden_fragments: ["I am Feynman", "I am Socrates"]

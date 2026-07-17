@@ -72,8 +72,6 @@ class MingrenSkillEngine:
         substantive = [
             match for match in matches
             if match.rule.primary_lens in {primary_lens, "none"}
-            or match.rule.primary_lens in {"socrates", "feynman"} and primary_lens in {"socrates", "feynman"}
-            or match.rule.primary_lens in {"von-neumann", "laozi"} and primary_lens in {"von-neumann", "laozi"}
         ]
         return _unique_matches(conflict + substantive)
 

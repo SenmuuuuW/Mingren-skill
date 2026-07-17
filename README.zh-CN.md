@@ -8,7 +8,7 @@
 <p><a href="README.md">English</a> &nbsp;|&nbsp; 中文</p>
 
 <p>
-  <a href="CHANGELOG.md"><img alt="阶段：V0.1 基础版" src="https://img.shields.io/badge/stage-v0.1%20foundation-0f766e?style=flat-square"></a>
+  <a href="CHANGELOG.md"><img alt="阶段：V0.1 实验版" src="https://img.shields.io/badge/stage-v0.1%20experimental-0f766e?style=flat-square"></a>
   <a href="SKILL.md"><img alt="规范优先" src="https://img.shields.io/badge/approach-specification%20first-2563eb?style=flat-square"></a>
   <a href="pyproject.toml"><img alt="Python 3.11+ 原型" src="https://img.shields.io/badge/Python-3.11%2B%20prototype-3776AB?style=flat-square&logo=python&logoColor=white"></a>
   <a href="references/thinkers/"><img alt="四个思想家镜头" src="https://img.shields.io/badge/thinker%20lenses-4-7c3aed?style=flat-square"></a>
@@ -18,11 +18,13 @@
 </div>
 
 > [!IMPORTANT]
-> **当前阶段：V0.1 基础版。** Mingren 是可安装、由宿主执行的学习 Skill。教学行为、质量边界、示例和评测以 Markdown/YAML 规范为主；仓库另含可选的离线 Python 路由、提示预览和检查工具。
+> **当前阶段：V0.1 基础版，文档优先，实验阶段。** 教学行为、质量边界、示例和评测以 Markdown/YAML 规范为主；仓库另含范围明确的离线 Python 路由、验证、评测辅助与实验性 bundle 构建工具。
 
 ## 这个项目是什么
 
-名人教你（Mingren Skill）是一个可安装的跨学科学习 Skill。它用四种有明确边界的思想家镜头组织解释。加载 Skill 的宿主模型直接生成最终回答；Mingren 不调用外部模型 API。普通使用不需要 API 密钥、后端、网络、Python 或命令行。Python 工具仅供维护者离线开发和验证。
+名人教你（Mingren Skill）是一个面向兼容 Host 执行的跨学科学习 Skill。它用四种有明确边界的思想家镜头组织解释。加载 Skill 的 Host 模型直接生成最终回答；Mingren 不调用外部模型 API。
+
+生成后的 bundle 面向具备相应能力的 Host 环境；当前构建和验证过程仍需要 Python 及文档列出的依赖。项目尚未完成对某个具体 Host 的正式兼容性验证，也尚未实际运行人工 Host 行为评测。bundle 生成后，兼容 Host 可以在不使用本项目 Python 构建工具的情况下读取它。
 
 名人教你 Skill 是一个跨学科学习项目。它把有公开依据的思考方式和教学方法蒸馏成明确、可检查的人物镜头，让镜头改变解释的组织方式，同时始终以真实学术概念为准。
 
@@ -77,7 +79,7 @@ V0.1 有意只支持这四个镜头。每个镜头都记录了来源基础、优
 问一个聚焦的检查问题
 ```
 
-用户直接指定镜头时，以指定为准。鲜明的方法请求可以建议镜头；学科本身不会自动选择镜头。“讲简单点”这类通用请求在没有明确镜头意图时保持中性。
+用户直接指定镜头时，以指定为准。鲜明的方法请求可以建议镜头；学科本身不会自动选择镜头。“讲简单点”这类通用请求在没有明确镜头意图时保持中性。仅请求名言、归属或来源也保持中性，除非用户另行要求通过该镜头教学。
 
 ## 项目分层
 
@@ -86,19 +88,21 @@ V0.1 有意只支持这四个镜头。每个镜头都记录了来源基础、优
 | 产品规范 | 权威的 Skill 行为和质量边界 | [`SKILL.md`](SKILL.md)、[`references/`](references/) |
 | 人物研究 | 四个镜头的来源约束与详细定义 | [`references/thinkers/`](references/thinkers/) |
 | 示例与评测 | 标准示例、评测案例和失败检查 | [`examples/`](examples/)、[`evals/`](evals/) |
-| 可选开发工具 | 路由、离线提示预览、确定性检查与打包验证 | [`src/mingren_skill/`](src/mingren_skill/)、[`scripts/`](scripts/)、[`tests/`](tests/) |
+| Python 实现与维护工具 | 路由、离线提示预览、确定性检查、评测辅助与 bundle 构建 | [`src/mingren_skill/`](src/mingren_skill/)、[`scripts/`](scripts/)、[`tests/`](tests/) |
 
 产品 Markdown 仍然是权威定义。实现和规范不一致时，应同步更新 Python 规则、评测案例和测试，使其重新符合规范。
 
-## 📦 安装与使用
+## 📦 构建实验性 bundle
 
-构建可移植运行时包：
+构建和验证 bundle 需要 Python 3.11 或更高版本、PyYAML 以及开发依赖：
 
-```sh
+```bash
+python -m pip install -e ".[dev]"
+python scripts/validate.py
 python scripts/build_skill_bundle.py
 ```
 
-命令会生成 `dist/skill/` 和可重现的 `dist/mingren-skill.zip`。在支持 Skill 的宿主中，通过宿主支持的文件或 Skill 接口加入该包，并以 `SKILL.md` 作为入口指令。详见[安装说明](docs/installation.md)和[运行时合约](docs/runtime_contract.md)。无需 API 密钥或后端。
+命令会按确定性规则生成 `dist/skill/` 和 `dist/mingren-skill.zip`。该 bundle 格式目前属于实验性设计，面向能够加载 Markdown/YAML、保留相对引用并以 `SKILL.md` 为入口指令的 Host。项目尚未验证任何具名 Host 的兼容性。详见[实验性安装流程](docs/installation.md)和[运行时合约](docs/runtime_contract.md)。
 
 示例请求：
 
@@ -110,9 +114,11 @@ python scripts/build_skill_bundle.py
 
 运行时包含入口 Skill、manifest、触发、回答与安全规则、四个镜头说明、精选示例、质量指南和校验和。不支持的思想家不会被自动创建成新镜头。
 
-## 🐍 可选 Python 开发工具
+## 🐍 Python 实现与维护工具
 
-Python 包是可选参考实现，包括确定性路由、离线提示预览、回答验证、评测辅助和开发 CLI。宿主通常直接读取 Skill，不需要传递 `PromptPackage`。
+Python 包是辅助参考实现，包括确定性路由、离线提示预览、回答验证、评测辅助和开发 CLI。阅读并应用 Markdown 规范不依赖该包；构建和验证生成后的 bundle 目前仍需要文档列出的 Python 环境。兼容 Host 通常直接读取 Skill，不需要传递 `PromptPackage`。
+
+新增 Python 工作仍受 [`MAINTENANCE.md`](MAINTENANCE.md) 中经项目所有者批准的窄范围离线工具政策约束；这不代表可以加入 Provider 集成或应用基础设施。
 
 ```text
 用户请求
@@ -146,14 +152,14 @@ mingren-skill validate-response "我胸口剧痛而且无法呼吸" --response "
 
 `plan` 输出 `EngineResult`；`prompt` 输出供离线检查的 `PromptPackage`；`validate-response` 对已有回答做确定性结构与安全检查。为了向后兼容，`mingren-skill "输入"` 仍等同于 `plan`。工具包不生成用户回答，不调用模型，也不能保证事实正确。
 
-当前限制：只支持四个镜头；离线路由依赖显式规则；不同宿主的行为需手动评测；验证器不能证明事实正确；`TODO-SOURCE` 项仍是临时资料缺口。
+当前限制：只支持四个镜头；离线路由依赖显式规则；验证器不能证明事实正确；bundle 格式仍处于实验阶段；尚未验证任何具名 Host 的兼容性；人工 Host 行为评测尚未实际运行；`TODO-SOURCE` 项仍是临时资料缺口。
 
 ## 文档导航
 
 - [`SKILL.md`](SKILL.md)：核心行为规范和回答流程
 - [`skill-manifest.yaml`](skill-manifest.yaml)：运行时文件、能力、版本和离线要求
 - [`docs/runtime_contract.md`](docs/runtime_contract.md)：权威宿主执行合约
-- [`docs/installation.md`](docs/installation.md)：通用宿主安装说明
+- [`docs/installation.md`](docs/installation.md)：实验性 bundle 的构建与加载流程
 - [`references/distillation-framework.md`](references/distillation-framework.md)：蒸馏人物镜头的统一标准
 - [`references/trigger-framework.md`](references/trigger-framework.md)：触发优先级、歧义与非触发规则
 - [`references/response-framework.md`](references/response-framework.md)：默认教学回答结构

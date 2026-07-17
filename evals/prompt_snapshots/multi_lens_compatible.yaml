@@ -1,5 +1,0 @@
-input: "I still don't understand this definition; what exactly does it mean?"
-selected_lenses: [feynman, socrates]
-applied_rules: [expose-understanding-gap, clarify-definition]
-required_fragments: ["find the first unsupported step", "state the ambiguity", "feynman, socrates"]
-forbidden_fragments: ["I am Feynman", "I am Socrates"]

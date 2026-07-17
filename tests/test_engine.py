@@ -39,6 +39,16 @@ def test_default_direct_explanation() -> None:
     assert result.matched_rule_ids == ["default-direct-explanation"]
 
 
+def test_engine_keeps_only_explicit_primary_lens_actions() -> None:
+    result = engine().plan(
+        "Use the Feynman lens to break this system into modules and show the data flow"
+    )
+    assert result.selected_primary_lens == "feynman"
+    assert result.secondary_lenses == []
+    assert "explain-simply" in result.matched_rule_ids
+    assert "decompose-complex-system" not in result.matched_rule_ids
+
+
 def test_conflict_resolution_does_not_duplicate_actions() -> None:
     result = engine().plan("Explain this simply but preserve exact technical precision")
     assert "detect-lens-conflict" in result.matched_rule_ids
